@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Mail, CheckCircle, AlertCircle, Send } from 'lucide-react'
 import api from '../services/api'
 import LogoBadge from '../components/LogoBadge'
+import { TextureButton } from '../components/ui/texture-button'
 
 export default function ForgotPassword() {
   const [email,   setEmail]   = useState('')
@@ -25,19 +26,15 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-navy flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-teal-500/15 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-teal-400/8 rounded-full blur-3xl" />
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(14,157,163,1) 1px, transparent 1px), linear-gradient(90deg, rgba(14,157,163,1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-          }}
-        />
-      </div>
+    <div className="min-h-screen bg-ink flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background — subtle grid only, no decorative blobs (DESIGN.md: minimal decoration) */}
+      <div
+        className="absolute inset-0 opacity-[0.05] pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(200,255,77,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,77,1) 1px, transparent 1px)',
+          backgroundSize: '50px 50px',
+        }}
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -52,7 +49,7 @@ export default function ForgotPassword() {
           </div>
         </div>
 
-        <div className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="surface-card rounded-lg overflow-hidden">
           <AnimatePresence mode="wait">
 
             {/* ── Formulario ─────────────────────────────────────── */}
@@ -65,11 +62,11 @@ export default function ForgotPassword() {
                 className="p-8"
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-11 h-11 bg-teal-500/20 rounded-xl flex items-center justify-center shrink-0">
-                    <Mail size={20} className="text-teal-400" />
+                  <div className="w-11 h-11 bg-ink-surface2 border border-ink-border rounded-md flex items-center justify-center shrink-0">
+                    <Mail size={20} className="text-lime" />
                   </div>
                   <div>
-                    <h2 className="text-white font-bold text-lg leading-tight">Restablecer contraseña</h2>
+                    <h2 className="font-display text-white font-bold text-lg leading-tight">Restablecer contraseña</h2>
                     <p className="text-white/40 text-xs mt-0.5">Te enviaremos una contraseña temporal</p>
                   </div>
                 </div>
@@ -78,7 +75,7 @@ export default function ForgotPassword() {
                   <motion.div
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 bg-red-500/15 border border-red-500/30 text-red-300 rounded-xl px-4 py-3 mb-5 text-sm"
+                    className="flex items-center gap-2 bg-error/10 border border-error/30 text-error rounded-md px-4 py-3 mb-5 text-sm"
                   >
                     <AlertCircle size={15} className="shrink-0" />
                     {error}
@@ -96,25 +93,19 @@ export default function ForgotPassword() {
                       onChange={e => setEmail(e.target.value)}
                       required
                       placeholder="tu@correo.com"
-                      className="w-full bg-white/8 border border-white/15 text-white placeholder-white/30 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition-all"
+                      className="w-full bg-ink-surface2 border border-ink-border text-white placeholder-white/25 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-lime focus:ring-2 focus:ring-lime/20 transition-all"
                     />
                     <p className="text-white/30 text-xs mt-2">
                       Debes usar el correo con el que te registraron en el sistema.
                     </p>
                   </div>
 
-                  <motion.button
-                    type="submit"
-                    disabled={loading}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-400 disabled:opacity-60 text-white py-3.5 rounded-xl font-semibold shadow-lg shadow-teal-500/25 transition-all"
-                  >
+                  <TextureButton type="submit" variant="lime" disabled={loading}>
                     {loading
-                      ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ? <div className="w-5 h-5 border-2 border-ink/30 border-t-ink rounded-full animate-spin" />
                       : <><Send size={16} /> Enviar contraseña temporal</>
                     }
-                  </motion.button>
+                  </TextureButton>
                 </form>
               </motion.div>
             )}
@@ -127,10 +118,10 @@ export default function ForgotPassword() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="p-8 text-center"
               >
-                <div className="w-20 h-20 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
-                  <CheckCircle size={38} className="text-teal-400" />
+                <div className="w-20 h-20 bg-ink-surface2 border border-ink-border rounded-full flex items-center justify-center mx-auto mb-5">
+                  <CheckCircle size={38} className="text-lime" />
                 </div>
-                <h2 className="text-white font-bold text-xl mb-2">¡Correo enviado!</h2>
+                <h2 className="font-display text-white font-bold text-xl mb-2">¡Correo enviado!</h2>
                 <p className="text-white/50 text-sm leading-relaxed mb-2">
                   Si <strong className="text-white/70">{email}</strong> está registrado,
                   recibirás una contraseña temporal en tu bandeja de entrada.
@@ -139,23 +130,22 @@ export default function ForgotPassword() {
                   Revisa también la carpeta de spam. La contraseña vence en 24 horas.
                 </p>
 
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-left mb-6 space-y-2">
-                  <p className="text-white/60 text-xs font-semibold uppercase tracking-wider">Próximos pasos</p>
+                <div className="bg-ink-surface2 border border-ink-border rounded-md p-4 text-left mb-6 space-y-2">
+                  <p className="text-white/60 text-xs font-semibold uppercase tracking-wider font-mono">Próximos pasos</p>
                   {['Revisa tu correo y copia la contraseña temporal', 'Inicia sesión con esa contraseña', 'Cambia tu contraseña desde el dashboard'].map((s, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <div className="w-5 h-5 bg-teal-500/30 rounded-full flex items-center justify-center shrink-0">
-                        <span className="text-teal-400 text-xs font-bold">{i + 1}</span>
+                      <div className="w-5 h-5 bg-lime/20 rounded-full flex items-center justify-center shrink-0">
+                        <span className="text-lime text-xs font-bold">{i + 1}</span>
                       </div>
                       <span className="text-white/60 text-sm">{s}</span>
                     </div>
                   ))}
                 </div>
 
-                <Link
-                  to="/login"
-                  className="block w-full bg-teal-500 hover:bg-teal-400 text-white py-3 rounded-xl font-semibold text-center transition-colors"
-                >
-                  Ir al login
+                <Link to="/login" className="block">
+                  <TextureButton variant="lime" className="w-full">
+                    Ir al login
+                  </TextureButton>
                 </Link>
               </motion.div>
             )}
@@ -166,7 +156,7 @@ export default function ForgotPassword() {
         <div className="text-center mt-4">
           <Link
             to="/login"
-            className="flex items-center justify-center gap-1.5 text-white/40 hover:text-white/70 text-sm transition-colors"
+            className="flex items-center justify-center gap-1.5 text-white/40 hover:text-lime text-sm transition-colors"
           >
             <ArrowLeft size={14} /> Volver al login
           </Link>

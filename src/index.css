@@ -1,76 +1,69 @@
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 79 100% 65%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 11%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 11%;
+    --muted-foreground: 0 0% 62%;
+
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 351 94% 71%;
+    --destructive-foreground: 0 0% 4%;
+
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 79 100% 65%;
+
+    --radius: 0.5rem;
+  }
+
   html { scroll-behavior: smooth; }
   body {
-    @apply font-sans antialiased text-slate-100;
-    background-color: #060A14;
+    @apply font-sans antialiased text-foreground;
+    background-color: hsl(var(--background));
   }
+  * { @apply border-border; }
 }
 
 @layer utilities {
-  /* Gradientes de texto */
-  .text-violet-gradient {
-    @apply bg-gradient-to-r from-violet-400 via-cyan-400 to-violet-400 bg-clip-text text-transparent;
-    background-size: 200% auto;
-  }
-  .text-gradient-teal {
-    @apply bg-gradient-to-r from-teal-400 to-teal-300 bg-clip-text text-transparent;
+  /* Tabular figures for money/metrics columns */
+  .tnum { font-feature-settings: "tnum"; }
+
+  /* Lime text accent (use sparingly — DESIGN.md: one accent, used with restraint) */
+  .text-accent-lime { color: #C8FF4D; }
+
+  /* Cards */
+  .surface-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
   }
 
-  /* Cards glassmorphism */
-  .glass-card {
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .glass-card-violet {
-    background: rgba(124,58,237,0.08);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(139,92,246,0.2);
-  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #C8FF4D; }
 
-  /* Glow effects */
-  .glow-violet { box-shadow: 0 0 40px rgba(124,58,237,0.3); }
-  .glow-cyan   { box-shadow: 0 0 40px rgba(6,182,212,0.3); }
-  .text-glow-violet { text-shadow: 0 0 40px rgba(167,139,250,0.5); }
-
-  /* Grid decorativa */
-  .bg-grid {
-    background-image:
-      linear-gradient(rgba(139,92,246,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(139,92,246,0.06) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-  .bg-grid-sm {
-    background-image:
-      linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
-
-  /* Borde gradiente */
-  .border-gradient-violet {
-    border: 1px solid transparent;
-    background: linear-gradient(#060A14, #060A14) padding-box,
-                linear-gradient(135deg, rgba(139,92,246,0.6), rgba(6,182,212,0.4)) border-box;
-  }
-
-  /* Shimmer */
-  .shimmer {
-    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
-    background-size: 200% 100%;
-    animation: shimmer 2.5s linear infinite;
-  }
+  ::selection { background: rgba(200,255,77,0.3); color: #fff; }
 }
-
-/* Custom scrollbar */
-::-webkit-scrollbar        { width: 5px; }
-::-webkit-scrollbar-track  { background: #060A14; }
-::-webkit-scrollbar-thumb  { background: rgba(139,92,246,0.4); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.7); }
-
-/* Selección de texto */
-::selection { background: rgba(139,92,246,0.3); color: #fff; }
