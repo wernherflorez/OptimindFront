@@ -1,9 +1,11 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
-import Landing        from './pages/Landing'
-import Dashboard      from './pages/Dashboard'
-import Login          from './pages/Login'
-import ForgotPassword from './pages/ForgotPassword'
+
+const Landing        = lazy(() => import('./pages/Landing'))
+const Dashboard      = lazy(() => import('./pages/Dashboard'))
+const Login          = lazy(() => import('./pages/Login'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth()
@@ -17,18 +19,20 @@ function PublicRoute({ children }) {
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/"  element={<Landing />} />
-      <Route path="/login" element={
-        <PublicRoute><Login /></PublicRoute>
-      } />
-      <Route path="/forgot-password" element={
-        <PublicRoute><ForgotPassword /></PublicRoute>
-      } />
-      <Route path="/dashboard/*" element={
-        <ProtectedRoute><Dashboard /></ProtectedRoute>
-      } />
-    </Routes>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path="/"  element={<Landing />} />
+        <Route path="/login" element={
+          <PublicRoute><Login /></PublicRoute>
+        } />
+        <Route path="/forgot-password" element={
+          <PublicRoute><ForgotPassword /></PublicRoute>
+        } />
+        <Route path="/dashboard/*" element={
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        } />
+      </Routes>
+    </Suspense>
   )
 }
 
