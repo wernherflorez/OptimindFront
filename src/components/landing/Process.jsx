@@ -13,7 +13,8 @@ const steps = [
 export default function Process() {
   const ref   = useRef(null)
   const inView = useInView(ref, { once: true })
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const lineRef = useRef(null)
+  const { scrollYProgress } = useScroll({ target: lineRef, offset: ['start end', 'end start'] })
   const lineH = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%'])
 
   return (
@@ -38,7 +39,7 @@ export default function Process() {
           </h2>
         </motion.div>
 
-        <div className="relative">
+        <div ref={lineRef} className="relative">
           {/* Vertical line */}
           <div className="absolute left-[28px] lg:left-1/2 lg:-translate-x-px top-0 bottom-0 w-px bg-white/5">
             <motion.div
