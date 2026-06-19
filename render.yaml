@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: optimind-api
+    runtime: node
+    region: oregon
+    rootDir: api
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22.19.0
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true       # Render genera un valor aleatorio seguro
+      - key: JWT_EXPIRES_IN
+        value: 8h
+      - key: DB_PATH
+        value: /data/optimind.db  # Persistent disk mount
+      - key: CORS_ORIGINS
+        value: https://TU_SITIO.netlify.app  # ← Cambia por tu URL de Netlify
+    disk:
+      name: optimind-db
+      mountPath: /data
+      sizeGB: 1

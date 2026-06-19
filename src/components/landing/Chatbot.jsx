@@ -1,0 +1,250 @@
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
+
+const BOT = 'bot'
+const USR = 'user'
+
+const initialMessages = [
+  {
+    from: BOT,
+    text: '¡Hola! 👋 Soy el asistente de **OptiMind Solutions**. ¿En qué puedo ayudarte hoy?',
+    time: new Date(),
+  },
+]
+
+const quickReplies = [
+  '¿Qué servicios ofrecen?',
+  '¿Cuánto cuesta un proyecto?',
+  '¿Cuánto tiempo tarda el MVP?',
+  '¿Cómo agendo una consulta?',
+]
+
+const responses = {
+  servicios: {
+    keys: ['servicio', 'hacen', 'ofrecen', 'que hacen'],
+    text: 'Ofrecemos 5 servicios principales:\n\n🌐 **Plataformas Web & APIs** personalizadas\n⚙️ **Automatización de procesos** (−30% tiempo operativo)\n📊 **Dashboards BI** con Power BI\n💳 **Integración PSE** y pasarelas de pago\n🔧 **Mantenimiento & Soporte** continuo\n\n¿Sobre cuál quieres saber más?',
+  },
+  precio: {
+    keys: ['precio', 'costo', 'cuánto', 'cuanto', 'vale', 'presupuesto', 'tarifa'],
+    text: 'Nuestros proyectos van desde **$600.000 hasta $2.500.000 COP** dependiendo del alcance.\n\n💰 Desarrollo web básico: desde $600K\n🚀 Plataformas con BI o integraciones: hasta $2.5M\n🔧 Mantenimiento mensual: según SLA\n\nPrecios cerrados, sin cobros ocultos. Incluye desarrollo, pruebas, deploy y capacitación.\n\n¿Quieres un diagnóstico gratuito para estimar tu proyecto?',
+  },
+  tiempo: {
+    keys: ['tiempo', 'semana', 'cuándo', 'cuando', 'rápido', 'rapido', 'demora', 'tarda', 'mvp'],
+    text: '⚡ Entregamos MVPs funcionales en **4–6 semanas**.\n\nNuestro proceso:\n• Semana 1: Diagnóstico y propuesta\n• Semanas 2–5: Desarrollo en sprints\n• Semana 6: Lanzamiento y capacitación\n\nDemos quincenales para que veas avances reales. Mucho más rápido que la competencia (3–6 meses).',
+  },
+  contacto: {
+    keys: ['contacto', 'agendar', 'hablar', 'llamar', 'reunión', 'reunion', 'consulta', 'diagnóstico', 'diagnostico'],
+    text: '📅 Puedes agendar tu **diagnóstico gratuito de 30 min** directamente:\n\n✉️ Email: FlorezWernher26@gmail.com\n📱 WhatsApp: +57 321 307 4133\n📝 Formulario de contacto abajo en la página\n\nTe respondemos en menos de 24 horas.',
+  },
+  tecnologia: {
+    keys: ['tecnolog', 'react', 'node', 'azure', 'stack', 'framework', 'lenguaje'],
+    text: 'Trabajamos con tecnologías modernas y escalables:\n\n⚛️ **Frontend**: React + Tailwind CSS\n🟢 **Backend**: Node.js + Express\n☁️ **Cloud**: Azure / AWS / GCP\n📊 **BI**: Power BI\n🔐 **Auth**: JWT + PCI-DSS compliant\n\nTodo con uptime garantizado del 99.9%.',
+  },
+  pymes: {
+    keys: ['pyme', 'pequeña', 'empresa', 'sector', 'retail', 'fintech', 'logística', 'logistica', 'salud'],
+    text: 'Trabajamos con **Pymes de 10 a 200 empleados** en:\n\n🛍️ Retail\n💰 Fintech\n📦 Logística\n🏥 Salud\n\nNuestro mercado base es **Colombia**, con expansión a la región Andina y Latinoamérica.',
+  },
+  default: {
+    text: 'Gracias por tu mensaje. Para darte la mejor respuesta, te recomiendo:\n\n📝 Llenar el **formulario de contacto** en esta misma página\n✉️ Escribirnos a: FlorezWernher26@gmail.com\n\nO cuéntame más sobre lo que necesitas y con gusto te oriento. 😊',
+  },
+}
+
+function getResponse(text) {
+  const lower = text.toLowerCase()
+  for (const [, data] of Object.entries(responses)) {
+    if (data.keys && data.keys.some(k => lower.includes(k))) {
+      return data.text
+    }
+  }
+  return responses.default.text
+}
+
+function renderText(text) {
+  return text.split('\n').map((line, i) => {
+    const parts = line.split(/\*\*(.*?)\*\*/g)
+    return (
+      <span key={i}>
+        {parts.map((p, j) =>
+          j % 2 === 1 ? <strong key={j}>{p}</strong> : <span key={j}>{p}</span>
+        )}
+        {i < text.split('\n').length - 1 && <br />}
+      </span>
+    )
+  })
+}
+
+export default function Chatbot() {
+  const [open, setOpen] = useState(false)
+  const [messages, setMessages] = useState(initialMessages)
+  const [input, setInput] = useState('')
+  const [typing, setTyping] = useState(false)
+  const bottomRef = useRef(null)
+
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
+    }
+  }, [messages, open])
+
+  const sendMessage = async (text) => {
+    const msg = text || input.trim()
+    if (!msg) return
+    setInput('')
+
+    setMessages(prev => [...prev, { from: USR, text: msg, time: new Date() }])
+    setTyping(true)
+
+    await new Promise(r => setTimeout(r, 900 + Math.random() * 600))
+    const reply = getResponse(msg)
+    setTyping(false)
+    setMessages(prev => [...prev, { from: BOT, text: reply, time: new Date() }])
+  }
+
+  const handleKey = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() }
+  }
+
+  return (
+    <>
+      {/* Floating button */}
+      <motion.button
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 2, type: 'spring' }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setOpen(true)}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 rounded-full flex items-center justify-center shadow-2xl shadow-violet-500/50 transition-all"
+        aria-label="Abrir chat"
+      >
+        <AnimatePresence mode="wait">
+          {open ? null : (
+            <motion.div
+              key="icon"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+            >
+              <MessageCircle size={24} className="text-white" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* Badge */}
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white animate-pulse" />
+      </motion.button>
+
+      {/* Chat window */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 20, originX: 1, originY: 1 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: 20 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 flex flex-col rounded-2xl overflow-hidden"
+            style={{ height: 520, background: '#0D1220', border: '1px solid rgba(139,92,246,0.25)', boxShadow: '0 0 60px rgba(124,58,237,0.3)' }}
+          >
+            {/* Header */}
+            <div className="px-5 py-4 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.1))', borderBottom: '1px solid rgba(139,92,246,0.2)' }}>
+              <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-500 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-violet-500/30">
+                <Bot size={20} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <div className="text-white font-bold text-sm">Asistente OptiMind</div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                  <span className="text-white/50 text-xs">En línea</span>
+                </div>
+              </div>
+              <button onClick={() => setOpen(false)} className="text-white/40 hover:text-white transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ background: '#080C18' }}>
+              {messages.map((m, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`flex gap-2 ${m.from === USR ? 'flex-row-reverse' : ''}`}
+                >
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${m.from === BOT ? 'bg-gradient-to-br from-violet-600 to-violet-500' : 'bg-white/10'}`}>
+                    {m.from === BOT ? <Bot size={14} className="text-white" /> : <User size={14} className="text-white" />}
+                  </div>
+                  <div className={`max-w-[78%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                    m.from === BOT
+                      ? 'text-slate-300 rounded-tl-none'
+                      : 'bg-gradient-to-r from-violet-600 to-violet-500 text-white rounded-tr-none'
+                  }`}
+                  style={m.from === BOT ? { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(139,92,246,0.2)' } : {}}
+                  >
+                    {renderText(m.text)}
+                  </div>
+                </motion.div>
+              ))}
+
+              {typing && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-600 to-violet-500 flex items-center justify-center">
+                    <Bot size={14} className="text-white" />
+                  </div>
+                  <div className="rounded-2xl rounded-tl-none px-4 py-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(139,92,246,0.2)' }}>
+                    <div className="flex gap-1">
+                      {[0, 1, 2].map(i => (
+                        <motion.div
+                          key={i}
+                          animate={{ y: [0, -5, 0] }}
+                          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.2 }}
+                          className="w-2 h-2 bg-violet-400 rounded-full"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              <div ref={bottomRef} />
+            </div>
+
+            {/* Quick replies */}
+            {messages.length < 3 && (
+              <div className="px-4 py-2 flex gap-2 overflow-x-auto" style={{ background: '#0D1220', borderTop: '1px solid rgba(139,92,246,0.15)' }}>
+                {quickReplies.map(q => (
+                  <button
+                    key={q}
+                    onClick={() => sendMessage(q)}
+                    className="shrink-0 text-xs border border-violet-500/30 text-violet-400 hover:bg-violet-500/15 px-3 py-1.5 rounded-full transition-colors"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Input */}
+            <div className="px-4 py-3 flex gap-2" style={{ background: '#0D1220', borderTop: '1px solid rgba(139,92,246,0.15)' }}>
+              <input
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKey}
+                placeholder="Escribe tu pregunta..."
+                className="flex-1 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 focus:outline-none transition-all"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(139,92,246,0.2)' }}
+              />
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                onClick={() => sendMessage()}
+                disabled={!input.trim()}
+                className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 disabled:opacity-40 text-white rounded-xl flex items-center justify-center transition-all"
+              >
+                <Send size={16} />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
