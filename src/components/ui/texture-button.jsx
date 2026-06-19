@@ -75,7 +75,7 @@ const TextureButton = React.forwardRef((
   },
   ref
 ) => {
-  const Comp = asChild ? Slot : "button"
+  const Comp = asChild ? Slot : (props.href ? "a" : "button")
 
   return (
     <Comp

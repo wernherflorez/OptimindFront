@@ -11,8 +11,6 @@ const team = [
     photo: '/team/kevin.jpg',
     linkedin: 'https://www.linkedin.com/in/kevin-gonzalez-betancourt-649a50173/',
     initials: 'KG',
-    gradient: 'from-violet-600 to-violet-400',
-    glow: 'rgba(124,58,237,0.4)',
   },
   {
     name: 'Marlong Mendoza',
@@ -22,8 +20,6 @@ const team = [
     photo: '/team/marlong.jpg',
     linkedin: 'https://www.linkedin.com/in/marlong-mendoza/',
     initials: 'MM',
-    gradient: 'from-cyan-600 to-cyan-400',
-    glow: 'rgba(6,182,212,0.4)',
   },
   {
     name: 'Brayan Torres',
@@ -33,8 +29,6 @@ const team = [
     photo: '/team/brayan.jpg',
     linkedin: 'https://www.linkedin.com/in/brayan-torres01/',
     initials: 'BT',
-    gradient: 'from-violet-500 to-cyan-500',
-    glow: 'rgba(139,92,246,0.35)',
   },
   {
     name: 'Wernher Florez',
@@ -44,8 +38,6 @@ const team = [
     photo: '/team/wernher.jpg',
     linkedin: 'https://www.linkedin.com/in/wernher-florez-66644718a/',
     initials: 'WF',
-    gradient: 'from-emerald-500 to-cyan-500',
-    glow: 'rgba(16,185,129,0.35)',
   },
 ]
 
@@ -58,15 +50,8 @@ function MemberCard({ member, index, inView }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.12 }}
       whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      className="group relative glass-card rounded-2xl overflow-hidden flex flex-col"
-      style={{ '--glow': member.glow }}
+      className="group relative surface-card rounded-lg overflow-hidden flex flex-col"
     >
-      {/* Hover glow */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ boxShadow: `0 0 50px ${member.glow}` }}
-      />
-
       {/* Photo */}
       <div className="relative h-56 overflow-hidden shrink-0">
         {!imgFailed ? (
@@ -79,12 +64,12 @@ function MemberCard({ member, index, inView }) {
             className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className={`w-full h-full bg-gradient-to-br ${member.gradient} flex items-center justify-center`}>
-            <span className="text-white text-5xl font-black opacity-80">{member.initials}</span>
+          <div className="w-full h-full bg-ink-surface2 flex items-center justify-center">
+            <span className="text-lime text-5xl font-black opacity-80 font-display">{member.initials}</span>
           </div>
         )}
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0D1220] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-ink to-transparent" />
 
         {/* LinkedIn badge */}
         <a
@@ -92,29 +77,26 @@ function MemberCard({ member, index, inView }) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={e => e.stopPropagation()}
-          className="absolute top-3 right-3 w-9 h-9 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/20 hover:bg-violet-500/80 hover:border-violet-400"
+          className="absolute top-3 right-3 w-9 h-9 bg-ink/60 backdrop-blur-md rounded-md flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/20 hover:bg-lime hover:border-lime"
         >
-          <Linkedin size={15} className="text-white" />
+          <Linkedin size={15} className="text-white group-hover:text-ink" />
         </a>
       </div>
 
       {/* Info */}
       <div className="p-5 flex flex-col flex-1 relative z-10">
-        <h3 className="text-white font-bold text-base leading-tight">{member.name}</h3>
-        <div
-          className="text-sm font-semibold mt-0.5 mb-1 bg-gradient-to-r bg-clip-text text-transparent"
-          style={{ backgroundImage: `linear-gradient(to right, ${member.glow.replace('0.4', '1').replace('0.35', '1')}, #22d3ee)` }}
-        >
+        <h3 className="font-display text-white font-bold text-base leading-tight">{member.name}</h3>
+        <div className="text-sm font-semibold mt-0.5 mb-1 text-lime">
           {member.role}
         </div>
-        <div className="text-slate-500 text-xs mb-3 leading-relaxed">{member.specialty}</div>
-        <p className="text-slate-400 text-xs leading-relaxed flex-1">{member.bio}</p>
+        <div className="text-white/40 text-xs mb-3 leading-relaxed font-mono">{member.specialty}</div>
+        <p className="text-white/50 text-xs leading-relaxed flex-1">{member.bio}</p>
 
         <a
           href={member.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-violet-400 hover:text-violet-300 font-semibold mt-4 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-lime hover:text-lime-dim font-semibold mt-4 transition-colors"
         >
           <Linkedin size={13} />
           Ver perfil LinkedIn
@@ -129,11 +111,8 @@ export default function Team() {
   const inView = useInView(ref, { once: true })
 
   return (
-    <section id="equipo" className="py-28 relative overflow-hidden" style={{ background: '#070B16' }}>
+    <section id="equipo" className="py-28 relative overflow-hidden bg-ink-surface">
       <div className="absolute inset-0 bg-grid-sm pointer-events-none opacity-60" />
-      {/* Glows */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-violet-700/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-80 h-80 bg-cyan-700/8 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <motion.div
@@ -143,16 +122,13 @@ export default function Team() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-violet-400 text-xs font-bold uppercase tracking-[4px] block mb-4">
+          <span className="text-lime text-xs font-bold uppercase tracking-[4px] block mb-4 font-mono">
             Conoce al equipo
           </span>
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-5 leading-tight">
-            Las mentes detrás de{' '}
-            <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-              OptiMind
-            </span>
+          <h2 className="font-display text-4xl lg:text-5xl font-black text-white mb-5 leading-tight">
+            Las mentes detrás de <span className="text-lime">OptiMind</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+          <p className="text-white/50 text-lg max-w-2xl mx-auto">
             Ingenieros apasionados por la tecnología, comprometidos con entregar
             software que genera resultados tangibles para tu negocio.
           </p>

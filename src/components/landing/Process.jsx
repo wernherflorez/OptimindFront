@@ -1,13 +1,14 @@
 import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Search, Lightbulb, Code2, Rocket, HeartHandshake } from 'lucide-react'
+import { TextureButton } from '../ui/texture-button'
 
 const steps = [
-  { icon: Search,       n: '01', title: 'Diagnóstico',    time: 'Día 1',      color: 'from-violet-500 to-violet-700',  desc: 'Auditoría gratuita de 30 min. Identificamos dolores, mapeamos tu stack actual y detectamos oportunidades de alto impacto.' },
-  { icon: Lightbulb,    n: '02', title: 'Propuesta',      time: 'Semana 1',   color: 'from-cyan-500 to-blue-600',      desc: 'Alcance cerrado, precio definido, cronograma por sprints. Sin sorpresas, sin costos ocultos.' },
-  { icon: Code2,        n: '03', title: 'Desarrollo',     time: 'Sem 2–5',    color: 'from-emerald-500 to-teal-500',   desc: 'Sprints de 2 semanas con demos quincenales. Ves avances reales, puedes retroalimentar en cada iteración.' },
-  { icon: Rocket,       n: '04', title: 'Lanzamiento',    time: 'Semana 6',   color: 'from-amber-500 to-orange-500',   desc: 'Deploy, pruebas, capacitación y medición de KPIs. Tu MVP funcional antes de que la competencia termine de planear.' },
-  { icon: HeartHandshake,n:'05', title: 'Soporte',        time: 'Ongoing',    color: 'from-pink-500 to-violet-600',    desc: 'Mantenimiento continuo, SLA garantizado y evolución del producto conforme crece tu negocio.' },
+  { icon: Search,        n: '01', title: 'Diagnóstico', time: 'Día 1',    desc: 'Auditoría gratuita de 30 min. Identificamos dolores, mapeamos tu stack actual y detectamos oportunidades de alto impacto.' },
+  { icon: Lightbulb,     n: '02', title: 'Propuesta',   time: 'Semana 1', desc: 'Alcance cerrado, precio definido, cronograma por sprints. Sin sorpresas, sin costos ocultos.' },
+  { icon: Code2,         n: '03', title: 'Desarrollo',  time: 'Sem 2–5',  desc: 'Sprints de 2 semanas con demos quincenales. Ves avances reales, puedes retroalimentar en cada iteración.' },
+  { icon: Rocket,        n: '04', title: 'Lanzamiento', time: 'Semana 6', desc: 'Deploy, pruebas, capacitación y medición de KPIs. Tu MVP funcional antes de que la competencia termine de planear.' },
+  { icon: HeartHandshake,n: '05', title: 'Soporte',     time: 'Ongoing',  desc: 'Mantenimiento continuo, SLA garantizado y evolución del producto conforme crece tu negocio.' },
 ]
 
 export default function Process() {
@@ -18,7 +19,7 @@ export default function Process() {
   const lineH = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '100%'])
 
   return (
-    <section id="proceso" className="py-28 relative overflow-hidden bg-deep">
+    <section id="proceso" className="py-28 relative overflow-hidden bg-ink">
       <div className="absolute inset-0 bg-grid pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
@@ -28,23 +29,20 @@ export default function Process() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           className="text-center mb-20"
         >
-          <span className="text-violet-400 text-xs font-bold uppercase tracking-[4px] block mb-4">
+          <span className="text-lime text-xs font-bold uppercase tracking-[4px] block mb-4 font-mono">
             Cómo trabajamos
           </span>
-          <h2 className="text-4xl lg:text-6xl font-black text-white leading-tight">
-            De la idea al{' '}
-            <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-              MVP en 6 semanas
-            </span>
+          <h2 className="font-display text-4xl lg:text-6xl font-black text-white leading-tight">
+            De la idea al <span className="text-lime">MVP en 6 semanas</span>
           </h2>
         </motion.div>
 
         <div ref={lineRef} className="relative">
           {/* Vertical line */}
-          <div className="absolute left-[28px] lg:left-1/2 lg:-translate-x-px top-0 bottom-0 w-px bg-white/5">
+          <div className="absolute left-[28px] lg:left-1/2 lg:-translate-x-px top-0 bottom-0 w-px bg-ink-border">
             <motion.div
               style={{ height: lineH }}
-              className="w-full bg-gradient-to-b from-violet-500 to-cyan-500 rounded-full"
+              className="w-full bg-lime rounded-full"
             />
           </div>
 
@@ -63,24 +61,24 @@ export default function Process() {
                 >
                   {/* Icon node */}
                   <div className="relative z-10 shrink-0">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-xl`}>
-                      <Icon size={22} className="text-white" />
+                    <div className="w-14 h-14 rounded-md bg-ink-surface2 border border-ink-border flex items-center justify-center">
+                      <Icon size={22} className="text-lime" />
                     </div>
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#060A14] border border-white/10 rounded-full flex items-center justify-center">
-                      <span className="text-white text-[9px] font-black">{i + 1}</span>
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-ink border border-ink-border rounded-full flex items-center justify-center">
+                      <span className="text-white text-[9px] font-black font-mono">{i + 1}</span>
                     </div>
                   </div>
 
                   {/* Content */}
                   <motion.div
                     whileHover={{ scale: 1.02 }}
-                    className="glass-card rounded-2xl p-6 flex-1 max-w-md"
+                    className="surface-card rounded-lg p-6 flex-1 max-w-md"
                   >
-                    <div className={`inline-block text-xs font-mono px-2.5 py-1 rounded-full mb-3 bg-gradient-to-r ${step.color} text-white font-bold`}>
+                    <div className="inline-block text-xs font-mono px-2.5 py-1 rounded-full mb-3 bg-lime/15 text-lime font-bold">
                       {step.time}
                     </div>
-                    <h3 className="text-white font-bold text-xl mb-2">{step.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">{step.desc}</p>
+                    <h3 className="font-display text-white font-bold text-xl mb-2">{step.title}</h3>
+                    <p className="text-white/50 text-sm leading-relaxed">{step.desc}</p>
                   </motion.div>
 
                   {/* Spacer for alternating layout on lg */}
@@ -97,14 +95,13 @@ export default function Process() {
           transition={{ delay: 0.8 }}
           className="text-center mt-16"
         >
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: '0 20px 60px rgba(124,58,237,0.5)' }}
-            whileTap={{ scale: 0.97 }}
+          <TextureButton
+            variant="lime"
+            className="!w-auto px-8"
             onClick={() => document.querySelector('#contacto')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-4 bg-gradient-to-r from-violet-600 to-violet-500 text-white font-bold rounded-2xl shadow-xl shadow-violet-500/30 text-base"
           >
             Comenzar mi proyecto →
-          </motion.button>
+          </TextureButton>
         </motion.div>
       </div>
     </section>
