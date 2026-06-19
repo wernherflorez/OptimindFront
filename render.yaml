@@ -15,11 +15,7 @@ services:
         generateValue: true       # Render genera un valor aleatorio seguro
       - key: JWT_EXPIRES_IN
         value: 8h
-      - key: DB_PATH
-        value: /data/optimind.db  # Persistent disk mount
+      - key: DATABASE_URL
+        sync: false               # Pega aquí la connection string de Supabase (Settings → Database)
       - key: CORS_ORIGINS
         value: https://TU_SITIO.netlify.app  # ← Cambia por tu URL de Netlify
-    disk:
-      name: optimind-db
-      mountPath: /data
-      sizeGB: 1
