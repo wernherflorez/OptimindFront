@@ -80,7 +80,9 @@ export default function Navbar() {
           </div>
 
           {/* Mobile toggle */}
-          <button className="md:hidden p-2 text-white/70 hover:text-white ml-1"
+          <button
+            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+            className="md:hidden w-11 h-11 flex items-center justify-center text-white/70 hover:text-white ml-1"
             onClick={() => setOpen(p => !p)}>
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
