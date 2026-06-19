@@ -73,6 +73,8 @@ function MemberCard({ member, index, inView }) {
           <img
             src={member.photo}
             alt={member.name}
+            loading="lazy"
+            decoding="async"
             onError={() => setImgFailed(true)}
             className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
