@@ -54,3 +54,4 @@ vite.config.js.timestamp-*
 
 # ── Coverage / Test ───────────────────────────────────────────────────────
 coverage/
+.gstack/
