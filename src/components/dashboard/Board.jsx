@@ -11,14 +11,14 @@ const COLUMNS = [
   { id: 'Backlog',     label: 'Backlog',     dot: 'bg-slate-500',   header: 'rgba(100,116,139,0.15)' },
   { id: 'Por Hacer',   label: 'Por Hacer',   dot: 'bg-blue-500',    header: 'rgba(59,130,246,0.15)'  },
   { id: 'En Progreso', label: 'En Progreso', dot: 'bg-amber-500',   header: 'rgba(245,158,11,0.15)'  },
-  { id: 'En Revisión', label: 'En Revisión', dot: 'bg-violet-500',  header: 'rgba(139,92,246,0.15)'  },
+  { id: 'En Revisión', label: 'En Revisión', dot: 'bg-lime',  header: 'rgba(200,255,77,0.15)'  },
   { id: 'Completada',  label: 'Completada',  dot: 'bg-emerald-500', header: 'rgba(16,185,129,0.15)'  },
 ]
 
 const TYPES = [
   { id: 'task',  label: 'Tarea',    icon: CheckSquare, accent: 'rgba(59,130,246,0.8)',   border: 'rgba(59,130,246,0.4)'   },
   { id: 'bug',   label: 'Bug',      icon: Bug,         accent: 'rgba(239,68,68,0.8)',    border: 'rgba(239,68,68,0.4)'    },
-  { id: 'story', label: 'Historia', icon: BookOpen,    accent: 'rgba(139,92,246,0.8)',   border: 'rgba(139,92,246,0.4)'   },
+  { id: 'story', label: 'Historia', icon: BookOpen,    accent: 'rgba(200,255,77,0.8)',   border: 'rgba(200,255,77,0.4)'   },
 ]
 
 const PRIORITIES = [
@@ -38,7 +38,7 @@ const priDot   = id => PRIORITIES.find(p => p.id === id)?.dot || 'bg-slate-600'
 
 // ─── Dark inputs ──────────────────────────────────────────────────────────
 const dinpBase = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }
-const dinpFocus = { border: '1px solid rgba(139,92,246,0.5)' }
+const dinpFocus = { border: '1px solid rgba(200,255,77,0.5)' }
 const dinpCls = 'w-full rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition-all'
 
 function DI({ name, value, onChange, ...p }) {
@@ -49,7 +49,7 @@ function DI({ name, value, onChange, ...p }) {
 }
 function DS({ name, value, onChange, children }) {
   return <select name={name} value={value} onChange={onChange} className={dinpCls}
-    style={{ ...dinpBase, background: '#0D1220' }}>{children}</select>
+    style={{ ...dinpBase, background: '#131315' }}>{children}</select>
 }
 function DT({ name, value, onChange, rows }) {
   const [f, setF] = useState(false)
@@ -78,7 +78,7 @@ function TaskCard({ task, onEdit, onDelete, onMove }) {
           <Ti size={10} /> {ti.label}
         </span>
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-          <button onClick={() => onEdit(task)} className="p-1 rounded hover:bg-violet-500/20 text-slate-500 hover:text-violet-400 transition-colors">
+          <button onClick={() => onEdit(task)} className="p-1 rounded hover:bg-lime/20 text-slate-500 hover:text-lime transition-colors">
             <Edit3 size={11} />
           </button>
           <button onClick={() => onDelete(task.id)} className="p-1 rounded hover:bg-red-500/20 text-slate-500 hover:text-red-400 transition-colors">
@@ -107,8 +107,8 @@ function TaskCard({ task, onEdit, onDelete, onMove }) {
           )}
         </div>
         {task.assignee && (
-          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-600 to-violet-500 flex items-center justify-center shadow-md" title={task.assignee}>
-            <span className="text-white text-xs font-bold">{task.assignee[0]?.toUpperCase()}</span>
+          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-lime-dim to-lime flex items-center justify-center shadow-md" title={task.assignee}>
+            <span className="text-ink text-xs font-bold">{task.assignee[0]?.toUpperCase()}</span>
           </div>
         )}
       </div>
@@ -160,7 +160,7 @@ function TaskModal({ task, projects, sprints, activeSprint, onClose, onSave }) {
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
         className="w-full max-w-lg rounded-2xl overflow-hidden"
-        style={{ background: '#0D1220', border: '1px solid rgba(139,92,246,0.2)', boxShadow: '0 0 60px rgba(124,58,237,0.2)' }}>
+        style={{ background: '#131315', border: '1px solid rgba(200,255,77,0.2)', boxShadow: '0 0 60px rgba(200,255,77,0.2)' }}>
         <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <h3 className="font-bold text-white text-lg">{task ? 'Editar ítem' : 'Nuevo ítem'}</h3>
           <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors"><X size={20} /></button>
@@ -246,7 +246,7 @@ function TaskModal({ task, projects, sprints, activeSprint, onClose, onSave }) {
               Cancelar
             </button>
             <button type="submit" disabled={saving}
-              className="flex-1 bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 text-white py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60 transition-all">
+              className="flex-1 bg-gradient-to-r from-lime-dim to-lime hover:from-lime hover:to-lime text-ink py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-60 transition-all">
               {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : task ? 'Guardar' : 'Crear'}
             </button>
           </div>
@@ -270,7 +270,7 @@ function SprintModal({ sprint, projectId, onClose, onSave }) {
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
         className="w-full max-w-md rounded-2xl overflow-hidden"
-        style={{ background: '#0D1220', border: '1px solid rgba(139,92,246,0.2)', boxShadow: '0 0 60px rgba(124,58,237,0.2)' }}>
+        style={{ background: '#131315', border: '1px solid rgba(200,255,77,0.2)', boxShadow: '0 0 60px rgba(200,255,77,0.2)' }}>
         <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <h3 className="font-bold text-white text-lg">{sprint ? 'Editar sprint' : 'Nuevo sprint'}</h3>
           <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors"><X size={20} /></button>
@@ -309,7 +309,7 @@ function SprintModal({ sprint, projectId, onClose, onSave }) {
               Cancelar
             </button>
             <button type="submit" disabled={saving}
-              className="flex-1 bg-gradient-to-r from-violet-600 to-violet-500 text-white py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-all">
+              className="flex-1 bg-gradient-to-r from-lime-dim to-lime text-ink py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-all">
               {saving ? 'Guardando...' : sprint ? 'Guardar' : 'Crear sprint'}
             </button>
           </div>
@@ -407,7 +407,7 @@ export default function Board() {
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
-      <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-lime border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
@@ -422,13 +422,13 @@ export default function Board() {
         <div className="flex gap-2 flex-wrap">
           <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             onClick={() => setSprintModal({})} disabled={!selProject}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all disabled:opacity-40 text-violet-400 hover:text-white hover:bg-violet-500/15"
-            style={{ border: '1px solid rgba(139,92,246,0.3)' }}>
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all disabled:opacity-40 text-lime hover:text-white hover:bg-lime/15"
+            style={{ border: '1px solid rgba(200,255,77,0.3)' }}>
             <Target size={14} /> Nuevo sprint
           </motion.button>
-          <motion.button whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(124,58,237,0.4)' }} whileTap={{ scale: 0.97 }}
+          <motion.button whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(200,255,77,0.4)' }} whileTap={{ scale: 0.97 }}
             onClick={() => setModal({})} disabled={!selProject}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-violet-600 to-violet-500 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg shadow-violet-500/25 transition-all disabled:opacity-40">
+            className="flex items-center gap-1.5 bg-gradient-to-r from-lime-dim to-lime text-ink px-4 py-2 rounded-xl text-sm font-semibold shadow-lg shadow-lime/25 transition-all disabled:opacity-40">
             <Plus size={15} /> Nuevo ítem
           </motion.button>
         </div>
@@ -441,7 +441,7 @@ export default function Board() {
           value={selProject?.id || ''}
           onChange={e => setSelProject(projects.find(p => p.id === Number(e.target.value)) || null)}
           className="rounded-xl px-3 py-2 text-sm focus:outline-none font-medium text-white"
-          style={{ background: '#0D1220', border: '1px solid rgba(139,92,246,0.25)' }}
+          style={{ background: '#131315', border: '1px solid rgba(200,255,77,0.25)' }}
         >
           {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
@@ -451,7 +451,7 @@ export default function Board() {
           <button onClick={() => setSelSprint(null)}
             className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
             style={!selSprint
-              ? { background: 'rgba(139,92,246,0.2)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)' }
+              ? { background: 'rgba(200,255,77,0.2)', color: '#C8FF4D', border: '1px solid rgba(200,255,77,0.3)' }
               : { color: '#64748b' }}>
             📋 Backlog
           </button>
@@ -460,13 +460,13 @@ export default function Board() {
               <button onClick={() => setSelSprint(s)}
                 className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
                 style={selSprint?.id === s.id
-                  ? { background: 'rgba(139,92,246,0.2)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)' }
+                  ? { background: 'rgba(200,255,77,0.2)', color: '#C8FF4D', border: '1px solid rgba(200,255,77,0.3)' }
                   : { color: '#64748b' }}>
                 ⚡ {s.name}
               </button>
               {selSprint?.id === s.id && (
                 <div className="flex gap-0.5">
-                  <button onClick={() => setSprintModal(s)} className="p-1 rounded text-slate-600 hover:text-violet-400 transition-colors">
+                  <button onClick={() => setSprintModal(s)} className="p-1 rounded text-slate-600 hover:text-lime transition-colors">
                     <Edit3 size={11} />
                   </button>
                   <button onClick={() => deleteSprint(s)} className="p-1 rounded text-slate-600 hover:text-red-400 transition-colors">
@@ -484,7 +484,7 @@ export default function Board() {
             <button key={t.id} onClick={() => setFilterType(t.id)}
               className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
               style={filterType === t.id
-                ? { background: 'rgba(139,92,246,0.2)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)' }
+                ? { background: 'rgba(200,255,77,0.2)', color: '#C8FF4D', border: '1px solid rgba(200,255,77,0.3)' }
                 : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', color: '#64748b' }}>
               {t.label}
             </button>
@@ -496,10 +496,10 @@ export default function Board() {
       {selSprint && (
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
           className="rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4"
-          style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.08))', border: '1px solid rgba(139,92,246,0.25)' }}>
+          style={{ background: 'linear-gradient(135deg, rgba(200,255,77,0.2), rgba(6,182,212,0.08))', border: '1px solid rgba(200,255,77,0.25)' }}>
           <div>
             <div className="flex items-center gap-2">
-              <Zap size={15} className="text-violet-400" />
+              <Zap size={15} className="text-lime" />
               <span className="text-white font-bold">{selSprint.name}</span>
               <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${SPRINT_STATUS[selSprint.status] || ''}`}>
                 {selSprint.status === 'planning' ? 'Planificación' : selSprint.status === 'active' ? 'Activo' : 'Completado'}
@@ -513,7 +513,7 @@ export default function Board() {
               <div className="text-slate-600 text-xs">ítems</div>
             </div>
             <div className="text-center">
-              <div className="text-violet-400 font-black text-lg">{doneSP}/{totalSP}</div>
+              <div className="text-lime font-black text-lg">{doneSP}/{totalSP}</div>
               <div className="text-slate-600 text-xs">story points</div>
             </div>
             <div className="text-center">
@@ -571,7 +571,7 @@ export default function Board() {
                 {/* Quick add */}
                 <button
                   onClick={() => setModal({ status: col.id, sprint_id: selSprint?.id || null, project_id: selProject?.id })}
-                  className="flex items-center gap-1.5 text-slate-600 hover:text-violet-400 text-xs py-2 px-3 rounded-xl hover:bg-violet-500/10 transition-all">
+                  className="flex items-center gap-1.5 text-slate-600 hover:text-lime text-xs py-2 px-3 rounded-xl hover:bg-lime/10 transition-all">
                   <Plus size={13} /> Añadir ítem
                 </button>
               </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Mail, CheckCircle, AlertCircle, Send } from 'lucide-react'
 import api from '../services/api'
@@ -7,6 +7,7 @@ import LogoBadge from '../components/LogoBadge'
 import { TextureButton } from '../components/ui/texture-button'
 
 export default function ForgotPassword() {
+  const navigate = useNavigate()
   const [email,   setEmail]   = useState('')
   const [loading, setLoading] = useState(false)
   const [sent,    setSent]    = useState(false)
@@ -142,11 +143,9 @@ export default function ForgotPassword() {
                   ))}
                 </div>
 
-                <Link to="/login" className="block">
-                  <TextureButton variant="lime" className="w-full">
-                    Ir al login
-                  </TextureButton>
-                </Link>
+                <TextureButton variant="lime" className="w-full" onClick={() => navigate('/login')}>
+                  Ir al login
+                </TextureButton>
               </motion.div>
             )}
 

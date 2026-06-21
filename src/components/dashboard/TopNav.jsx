@@ -32,10 +32,7 @@ export default function TopNav() {
 
   return (
     <>
-      <header
-        className="sticky top-0 z-40 w-full"
-        style={{ background: 'rgba(10,15,28,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(139,92,246,0.12)' }}
-      >
+      <header className="sticky top-0 z-40 w-full bg-ink/95 backdrop-blur-xl border-b border-ink-border">
         <div className="max-w-screen-2xl mx-auto px-6 h-14 flex items-center gap-6">
 
           {/* Logo */}
@@ -51,10 +48,10 @@ export default function TopNav() {
             {links.map(({ to, label, icon: Icon, end }) => (
               <NavLink key={to} to={to} end={end}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  `flex items-center gap-2 px-3.5 py-1.5 rounded-md text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? 'bg-violet-500/15 text-violet-300 border border-violet-500/25'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-lime/15 text-lime border border-lime/25'
+                      : 'text-white/50 hover:text-white hover:bg-white/5'
                   }`
                 }
               >
@@ -67,30 +64,30 @@ export default function TopNav() {
           {/* Right section */}
           <div className="flex items-center gap-2 ml-auto">
             {/* Ver landing */}
-            <NavLink to="/" className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-500 hover:text-white hover:bg-white/5 transition-all">
+            <NavLink to="/" className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-white/40 hover:text-white hover:bg-white/5 transition-all">
               <Globe size={13} /> Landing
             </NavLink>
 
             {/* Notification bell */}
-            <button className="w-8 h-8 rounded-xl flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/5 transition-all relative">
+            <button className="w-8 h-8 rounded-md flex items-center justify-center text-white/40 hover:text-white hover:bg-white/5 transition-all relative">
               <Bell size={15} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-violet-500 rounded-full" />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-lime rounded-full" />
             </button>
 
             {/* User dropdown */}
             <div ref={dropRef} className="relative">
               <button
                 onClick={() => setDropOpen(p => !p)}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-white/5 transition-all"
+                className="flex items-center gap-2.5 px-3 py-1.5 rounded-md hover:bg-white/5 transition-all"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-violet-600 to-violet-500 flex items-center justify-center shrink-0 shadow-lg shadow-violet-500/30">
-                  <span className="text-white text-xs font-bold">{user?.full_name?.[0] || '?'}</span>
+                <div className="w-7 h-7 rounded-full bg-lime flex items-center justify-center shrink-0">
+                  <span className="text-ink text-xs font-bold">{user?.full_name?.[0] || '?'}</span>
                 </div>
                 <div className="hidden md:block text-left">
                   <div className="text-white text-xs font-semibold leading-none">{user?.full_name}</div>
-                  <div className="text-slate-600 text-xs capitalize mt-0.5">{user?.role}</div>
+                  <div className="text-white/30 text-xs capitalize mt-0.5 font-mono">{user?.role}</div>
                 </div>
-                <ChevronDown size={12} className={`text-slate-500 transition-transform duration-200 ${dropOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={12} className={`text-white/40 transition-transform duration-200 ${dropOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -100,19 +97,18 @@ export default function TopNav() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-2 w-52 rounded-2xl py-2 z-50"
-                    style={{ background: '#0D1220', border: '1px solid rgba(139,92,246,0.2)', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}
+                    className="absolute right-0 top-full mt-2 w-52 rounded-lg py-2 z-50 bg-ink-surface border border-ink-border shadow-2xl"
                   >
-                    <div className="px-4 py-2 mb-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div className="px-4 py-2 mb-1 border-b border-ink-border">
                       <p className="text-white text-sm font-semibold">{user?.full_name}</p>
-                      <p className="text-slate-500 text-xs mt-0.5">{user?.email}</p>
+                      <p className="text-white/40 text-xs mt-0.5">{user?.email}</p>
                     </div>
-                    <NavLink to="/" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-400 hover:text-white hover:bg-white/5 transition-all">
+                    <NavLink to="/" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-white/60 hover:text-white hover:bg-white/5 transition-all">
                       <Globe size={14} /> Ver landing
                     </NavLink>
                     <button
                       onClick={() => { logout(); navigate('/login') }}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
+                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-error hover:bg-error/10 transition-all"
                     >
                       <LogOut size={14} /> Cerrar sesión
                     </button>
@@ -123,7 +119,7 @@ export default function TopNav() {
 
             {/* Mobile hamburger */}
             <button
-              className="md:hidden w-8 h-8 flex items-center justify-center text-slate-400 hover:text-white"
+              className="md:hidden w-8 h-8 flex items-center justify-center text-white/50 hover:text-white"
               onClick={() => setMobileOpen(p => !p)}
             >
               {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -138,15 +134,14 @@ export default function TopNav() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden px-4 pb-3"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+              className="md:hidden overflow-hidden px-4 pb-3 border-t border-ink-border"
             >
               <div className="flex flex-col gap-1 pt-2">
                 {links.map(({ to, label, icon: Icon, end }) => (
                   <NavLink key={to} to={to} end={end} onClick={() => setMobileOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                        isActive ? 'bg-violet-500/15 text-violet-300' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      `flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-all ${
+                        isActive ? 'bg-lime/15 text-lime' : 'text-white/50 hover:text-white hover:bg-white/5'
                       }`
                     }
                   >

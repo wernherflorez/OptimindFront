@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext'
 
 const ROLES = ['admin', 'developer', 'viewer']
 const roleColors = {
-  admin:     'bg-violet-500/15 text-violet-400 border border-violet-500/25',
+  admin:     'bg-lime/15 text-lime border border-lime/25',
   developer: 'bg-blue-500/15 text-blue-400 border border-blue-500/25',
   viewer:    'bg-slate-500/15 text-slate-400 border border-slate-500/25',
 }
@@ -29,7 +29,7 @@ const QUESTION_POOL = [
 // ─── Shared dark input styles ─────────────────────────────────────────────
 const dinpCls = 'w-full rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none transition-all'
 const dinpStyle  = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }
-const dinpFocusS = { background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(139,92,246,0.5)' }
+const dinpFocusS = { background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(200,255,77,0.5)' }
 
 function DI({ name, value, onChange, disabled, ...p }) {
   const [f, setF] = useState(false)
@@ -43,7 +43,7 @@ function DI({ name, value, onChange, disabled, ...p }) {
 function DS({ name, value, onChange, children }) {
   return (
     <select name={name} value={value} onChange={onChange}
-      className={dinpCls} style={{ ...dinpStyle, background: '#0D1220' }}>
+      className={dinpCls} style={{ ...dinpStyle, background: '#131315' }}>
       {children}
     </select>
   )
@@ -55,7 +55,7 @@ function DarkModal({ children, title, onClose, size = 'lg' }) {
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
         className={`w-full ${size === 'sm' ? 'max-w-sm' : size === 'md' ? 'max-w-md' : 'max-w-lg'} rounded-2xl overflow-hidden`}
-        style={{ background: '#0D1220', border: '1px solid rgba(139,92,246,0.2)', boxShadow: '0 0 60px rgba(124,58,237,0.2)' }}>
+        style={{ background: '#131315', border: '1px solid rgba(200,255,77,0.2)', boxShadow: '0 0 60px rgba(200,255,77,0.2)' }}>
         <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <h3 className="font-bold text-white text-lg">{title}</h3>
           <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors"><X size={20} /></button>
@@ -143,7 +143,7 @@ function UserModal({ user, onClose, onSaved }) {
         {!isEdit && (
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <HelpCircle size={14} className="text-violet-400" />
+              <HelpCircle size={14} className="text-lime" />
               <span className="text-slate-300 text-sm font-medium">Preguntas de seguridad</span>
               <span className="text-slate-600 text-xs">(para recuperar contraseña)</span>
             </div>
@@ -168,7 +168,7 @@ function UserModal({ user, onClose, onSaved }) {
             Cancelar
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 disabled:opacity-60 text-white py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2">
+            className="flex-1 bg-gradient-to-r from-lime-dim to-lime hover:from-lime hover:to-lime disabled:opacity-60 text-ink py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2">
             {loading
               ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Guardando...</>
               : isEdit ? 'Guardar cambios' : 'Crear usuario'
@@ -208,7 +208,7 @@ function ResetPwdModal({ user, onClose }) {
             </div>
             <p className="font-bold text-white mb-1">Contraseña actualizada</p>
             <p className="text-slate-500 text-sm mb-4">Se actualizó para {user.full_name}</p>
-            <button onClick={onClose} className="text-violet-400 text-sm hover:text-violet-300 transition-colors">Cerrar</button>
+            <button onClick={onClose} className="text-lime text-sm hover:text-lime transition-colors">Cerrar</button>
           </div>
         ) : (
           <>
@@ -226,7 +226,7 @@ function ResetPwdModal({ user, onClose }) {
                   Cancelar
                 </button>
                 <button type="submit" disabled={loading}
-                  className="flex-1 bg-gradient-to-r from-violet-600 to-violet-500 text-white py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-all">
+                  className="flex-1 bg-gradient-to-r from-lime-dim to-lime text-ink py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-all">
                   {loading ? 'Guardando...' : 'Actualizar'}
                 </button>
               </div>
@@ -268,7 +268,7 @@ function QuestionsModal({ user, onClose }) {
               <CheckCircle size={28} className="text-emerald-400" />
             </div>
             <p className="font-bold text-white mb-1">Preguntas actualizadas</p>
-            <button onClick={onClose} className="mt-2 text-violet-400 text-sm hover:text-violet-300 transition-colors">Cerrar</button>
+            <button onClick={onClose} className="mt-2 text-lime text-sm hover:text-lime transition-colors">Cerrar</button>
           </div>
         ) : (
           <>
@@ -293,7 +293,7 @@ function QuestionsModal({ user, onClose }) {
                   Cancelar
                 </button>
                 <button type="submit" disabled={loading}
-                  className="flex-1 bg-gradient-to-r from-violet-600 to-violet-500 text-white py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-all">
+                  className="flex-1 bg-gradient-to-r from-lime-dim to-lime text-ink py-2.5 rounded-xl text-sm font-semibold disabled:opacity-60 transition-all">
                   {loading ? 'Guardando...' : 'Guardar preguntas'}
                 </button>
               </div>
@@ -343,7 +343,7 @@ export default function Users() {
 
   if (loading) return (
     <div className="flex items-center justify-center h-64">
-      <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+      <div className="w-8 h-8 border-2 border-lime border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
@@ -354,9 +354,9 @@ export default function Users() {
           <h1 className="text-2xl font-black text-white">Usuarios</h1>
           <p className="text-slate-500 text-sm mt-0.5">{users.length} usuarios registrados</p>
         </div>
-        <motion.button whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(124,58,237,0.4)' }} whileTap={{ scale: 0.97 }}
+        <motion.button whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(200,255,77,0.4)' }} whileTap={{ scale: 0.97 }}
           onClick={() => setModal('new')}
-          className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-violet-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-violet-500/25 transition-all">
+          className="flex items-center gap-2 bg-gradient-to-r from-lime-dim to-lime text-ink px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-lime/25 transition-all">
           <Plus size={16} /> Nuevo usuario
         </motion.button>
       </div>
@@ -382,18 +382,18 @@ export default function Users() {
               <motion.div key={u.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.04 }}
                 className={`grid md:grid-cols-6 gap-4 px-6 py-4 items-center group transition-colors ${!u.active ? 'opacity-40' : ''}`}
                 style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(139,92,246,0.04)'}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(200,255,77,0.04)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
                 {/* User info */}
                 <div className="md:col-span-2 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-violet-500/25">
-                    <span className="text-white font-bold text-sm">{u.full_name?.[0] || '?'}</span>
+                  <div className="w-10 h-10 bg-gradient-to-br from-lime-dim to-lime rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-lime/25">
+                    <span className="text-ink font-bold text-sm">{u.full_name?.[0] || '?'}</span>
                   </div>
                   <div>
                     <div className="text-white font-semibold text-sm flex items-center gap-1.5">
                       {u.full_name}
-                      {u.id === me?.id && <span className="text-xs text-violet-400 font-normal">(tú)</span>}
+                      {u.id === me?.id && <span className="text-xs text-lime font-normal">(tú)</span>}
                     </div>
                     <div className="text-slate-500 text-xs">@{u.username} · {u.email}</div>
                     {u.last_login && <div className="text-slate-700 text-xs">Último: {new Date(u.last_login).toLocaleDateString()}</div>}
@@ -429,7 +429,7 @@ export default function Users() {
                 {/* Actions */}
                 <div className="flex gap-1 md:justify-end opacity-0 group-hover:opacity-100 transition-opacity flex-wrap">
                   <button title="Editar" onClick={() => setModal({ type: 'edit', user: u })}
-                    className="p-2 rounded-lg text-slate-500 hover:text-violet-400 hover:bg-violet-500/10 transition-colors">
+                    className="p-2 rounded-lg text-slate-500 hover:text-lime hover:bg-lime/10 transition-colors">
                     <Edit3 size={13} />
                   </button>
                   <button title="Resetear contraseña" onClick={() => setModal({ type: 'pwd', user: u })}
@@ -437,7 +437,7 @@ export default function Users() {
                     <Key size={13} />
                   </button>
                   <button title="Preguntas de seguridad" onClick={() => setModal({ type: 'qs', user: u })}
-                    className="p-2 rounded-lg text-slate-500 hover:text-violet-400 hover:bg-violet-500/10 transition-colors">
+                    className="p-2 rounded-lg text-slate-500 hover:text-lime hover:bg-lime/10 transition-colors">
                     <Shield size={13} />
                   </button>
                   {u.id !== me?.id && (

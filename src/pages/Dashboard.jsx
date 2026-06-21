@@ -13,8 +13,8 @@ function LoadingScreen() {
   return (
     <div className="flex-1 flex items-center justify-center min-h-[60vh]">
       <div className="text-center">
-        <div className="w-10 h-10 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-slate-500 text-sm">Cargando datos...</p>
+        <div className="w-10 h-10 border-2 border-lime border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-white/40 text-sm font-mono">Cargando datos...</p>
       </div>
     </div>
   )
@@ -24,18 +24,18 @@ function ErrorScreen({ message, onRetry }) {
   return (
     <div className="flex-1 flex items-center justify-center min-h-[60vh] p-6">
       <div className="text-center max-w-sm">
-        <div className="w-14 h-14 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <AlertTriangle size={28} className="text-red-400" />
+        <div className="w-14 h-14 bg-error/10 border border-error/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <AlertTriangle size={28} className="text-error" />
         </div>
-        <h3 className="text-white font-bold text-lg mb-2">Error de conexión</h3>
-        <p className="text-slate-500 text-sm mb-5">{message}</p>
+        <h3 className="font-display text-white font-bold text-lg mb-2">Error de conexión</h3>
+        <p className="text-white/40 text-sm mb-5">{message}</p>
         <button onClick={onRetry}
-          className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-violet-500 text-white px-6 py-2.5 rounded-xl text-sm font-semibold mx-auto transition-all">
+          className="flex items-center gap-2 bg-lime text-ink px-6 py-2.5 rounded-md text-sm font-bold mx-auto transition-all hover:bg-lime-dim">
           <RefreshCw size={15} /> Reintentar
         </button>
-        <p className="text-slate-600 text-xs mt-4">
+        <p className="text-white/30 text-xs mt-4 font-mono">
           Asegúrate de que el API esté corriendo en<br />
-          <code className="text-violet-400">http://localhost:3001</code>
+          <code className="text-lime">http://localhost:3001</code>
         </p>
       </div>
     </div>
@@ -47,7 +47,7 @@ export default function Dashboard() {
   const db = useDashboard()
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#070B16' }}>
+    <div className="min-h-screen flex flex-col bg-ink">
       <TopNav />
 
       <main className="flex-1 w-full">

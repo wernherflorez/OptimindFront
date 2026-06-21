@@ -23,7 +23,7 @@ function DarkInput({ name, value, onChange, ...props }) {
   return (
     <input name={name} value={value} onChange={onChange}
       className={inp}
-      style={focused ? { ...inpStyle, border: '1px solid rgba(139,92,246,0.5)' } : inpStyle}
+      style={focused ? { ...inpStyle, border: '1px solid rgba(200,255,77,0.5)' } : inpStyle}
       onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
       {...props}
     />
@@ -34,7 +34,7 @@ function DarkSelect({ name, value, onChange, children }) {
   return (
     <select name={name} value={value} onChange={onChange}
       className={inp}
-      style={{ ...inpStyle, background: '#0D1220' }}
+      style={{ ...inpStyle, background: '#131315' }}
     >
       {children}
     </select>
@@ -64,7 +64,7 @@ function Modal({ client, onClose, onSave }) {
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
         className="w-full max-w-md rounded-2xl overflow-hidden"
-        style={{ background: '#0D1220', border: '1px solid rgba(139,92,246,0.2)', boxShadow: '0 0 60px rgba(124,58,237,0.2)' }}
+        style={{ background: '#131315', border: '1px solid rgba(200,255,77,0.2)', boxShadow: '0 0 60px rgba(200,255,77,0.2)' }}
       >
         <div className="flex items-center justify-between p-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
           <h3 className="text-white font-bold text-lg">{client ? 'Editar cliente' : 'Nuevo cliente'}</h3>
@@ -117,7 +117,7 @@ function Modal({ client, onClose, onSave }) {
               Cancelar
             </button>
             <button type="submit" disabled={saving}
-              className="flex-1 bg-gradient-to-r from-violet-600 to-violet-500 hover:from-violet-500 hover:to-violet-400 text-white py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-60">
+              className="flex-1 bg-gradient-to-r from-lime-dim to-lime hover:from-lime hover:to-lime text-ink py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-60">
               {saving
                 ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 : (client ? 'Guardar' : 'Agregar cliente')
@@ -147,9 +147,9 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
           <p className="text-slate-500 text-sm mt-0.5">{clients.length} clientes registrados</p>
         </div>
         <motion.button
-          whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(124,58,237,0.4)' }} whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(200,255,77,0.4)' }} whileTap={{ scale: 0.97 }}
           onClick={() => setModal('new')}
-          className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-violet-500 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-violet-500/25 transition-all"
+          className="flex items-center gap-2 bg-gradient-to-r from-lime-dim to-lime text-ink px-5 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-lime/25 transition-all"
         >
           <Plus size={16} /> Nuevo cliente
         </motion.button>
@@ -161,7 +161,7 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
           <button key={s} onClick={() => setFilter(s)}
             className="px-4 py-1.5 rounded-full text-sm font-medium transition-all"
             style={filter === s
-              ? { background: 'linear-gradient(to right, #7C3AED, #6D28D9)', color: '#fff' }
+              ? { background: 'linear-gradient(to right, #C8FF4D, #8FB838)', color: '#0A0A0B' }
               : { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#94a3b8' }
             }
           >
@@ -192,12 +192,12 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
                 transition={{ delay: i * 0.04 }}
                 className="grid md:grid-cols-6 gap-4 px-6 py-4 items-center group transition-colors"
                 style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(139,92,246,0.04)'}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(200,255,77,0.04)'}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
                 <div className="md:col-span-2 flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0"
-                    style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}>
+                    style={{ background: 'rgba(200,255,77,0.1)', border: '1px solid rgba(200,255,77,0.2)' }}>
                     {sectorIcons[c.sector] || '🏢'}
                   </div>
                   <div>
@@ -210,7 +210,7 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
 
                 <div className="hidden md:block">
                   <div className="flex items-center gap-1 text-sm text-slate-400">
-                    <Globe size={12} className="text-violet-400" /> {c.sector}
+                    <Globe size={12} className="text-lime" /> {c.sector}
                   </div>
                   <div className="text-xs text-slate-600 mt-0.5">{c.contact}</div>
                 </div>
@@ -222,7 +222,7 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
                 </div>
 
                 <div className="hidden md:block">
-                  <div className="flex items-center gap-1 text-sm font-semibold text-violet-400">
+                  <div className="flex items-center gap-1 text-sm font-semibold text-lime">
                     <TrendingUp size={12} /> {c.value ? formatCOP(c.value) : '—'}
                   </div>
                   <div className="text-xs text-slate-600 mt-0.5">{c.projects} proyecto(s)</div>
@@ -230,7 +230,7 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
 
                 <div className="flex gap-1 md:justify-end opacity-0 group-hover:opacity-100 transition-opacity">
                   <button onClick={() => setModal(c)}
-                    className="p-2 rounded-lg text-slate-500 hover:text-violet-400 hover:bg-violet-500/10 transition-colors">
+                    className="p-2 rounded-lg text-slate-500 hover:text-lime hover:bg-lime/10 transition-colors">
                     <Edit3 size={14} />
                   </button>
                   <button onClick={() => deleteClient(c.id)}
@@ -247,7 +247,7 @@ export default function Clients({ clients, addClient, updateClient, deleteClient
           <div className="py-16 text-center">
             <Building2 size={36} className="text-slate-700 mx-auto mb-3" />
             <p className="text-slate-500 text-sm">No hay clientes {filter !== 'Todos' ? `con estado "${filter}"` : 'registrados'}</p>
-            <button onClick={() => setModal('new')} className="mt-4 text-violet-400 text-sm hover:text-violet-300 transition-colors">
+            <button onClick={() => setModal('new')} className="mt-4 text-lime text-sm hover:text-lime transition-colors">
               + Agregar primer cliente
             </button>
           </div>
