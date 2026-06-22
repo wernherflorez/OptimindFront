@@ -6,24 +6,6 @@ import { useAuth } from '../context/AuthContext'
 import LogoBadge from '../components/LogoBadge'
 import { TextureButton } from '../components/ui/texture-button'
 import { TextAnimate } from '../components/ui/text-animate'
-import { AnimatedNumber } from '../components/ui/animated-number'
-
-const statusLines = [
-  { cmd: 'uptime',            value: 99.9, decimals: 1, suffix: '%' },
-  { cmd: 'proyectos_activos', value: 4,    decimals: 0, suffix: '' },
-  { cmd: 'stack',             text: 'React · Node.js · Postgres' },
-  { cmd: 'region',            text: 'co-latam-1' },
-]
-
-function Cursor() {
-  return (
-    <motion.span
-      animate={{ opacity: [1, 1, 0, 0] }}
-      transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1] }}
-      className="inline-block w-[7px] h-[14px] bg-lime ml-1 translate-y-[1px]"
-    />
-  )
-}
 
 export default function Login() {
   const { login, user } = useAuth()
@@ -96,39 +78,6 @@ export default function Login() {
           >
             El dashboard interno de OptiMind Solutions para coordinar proyectos, clientes y equipo.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="rounded-lg bg-ink border border-ink-border overflow-hidden max-w-sm"
-          >
-            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-ink-border bg-ink-surface2">
-              <span className="w-2.5 h-2.5 rounded-full bg-error/50" />
-              <span className="w-2.5 h-2.5 rounded-full bg-warning/50" />
-              <span className="w-2.5 h-2.5 rounded-full bg-success/50" />
-              <span className="text-white/30 text-xs font-mono ml-2">optimind@status</span>
-            </div>
-            <div className="p-4 font-mono text-xs space-y-2">
-              {statusLines.map((s, i) => (
-                <motion.div
-                  key={s.cmd}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 + i * 0.15 }}
-                  className="flex items-center justify-between gap-4"
-                >
-                  <span className="text-white/40">$ {s.cmd}</span>
-                  <span className="text-lime tnum">
-                    {s.text ?? <AnimatedNumber value={s.value} format={n => n.toFixed(s.decimals) + s.suffix} />}
-                  </span>
-                </motion.div>
-              ))}
-              <div className="flex items-center text-white/40 pt-1">
-                <span>$</span><Cursor />
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         {/* Footer branding */}
