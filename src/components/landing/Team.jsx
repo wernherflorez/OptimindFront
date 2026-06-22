@@ -77,7 +77,7 @@ function MemberCard({ member, index, inView }) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={e => e.stopPropagation()}
-          className="absolute top-3 right-3 w-9 h-9 bg-ink/60 backdrop-blur-md rounded-md flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/20 hover:bg-lime hover:border-lime"
+          className="absolute top-3 right-3 w-11 h-11 bg-ink/60 backdrop-blur-md rounded-md flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/20 hover:bg-lime hover:border-lime"
         >
           <Linkedin size={15} className="text-white group-hover:text-ink" />
         </a>
@@ -96,7 +96,7 @@ function MemberCard({ member, index, inView }) {
           href={member.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-lime hover:text-lime-dim font-semibold mt-4 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-lime hover:text-lime-dim font-semibold mt-4 py-2.5 transition-colors"
         >
           <Linkedin size={13} />
           Ver perfil LinkedIn
