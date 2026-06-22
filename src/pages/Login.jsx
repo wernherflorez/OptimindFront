@@ -5,7 +5,6 @@ import { Eye, EyeOff, LogIn, AlertCircle, ArrowLeft, LayoutDashboard, Lock } fro
 import { useAuth } from '../context/AuthContext'
 import LogoBadge from '../components/LogoBadge'
 import { TextureButton } from '../components/ui/texture-button'
-import { TextAnimate } from '../components/ui/text-animate'
 
 export default function Login() {
   const { login, user } = useAuth()
@@ -36,77 +35,27 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex bg-ink">
+    <div className="min-h-screen flex items-center justify-center bg-ink relative overflow-hidden p-6">
+      <div className="absolute inset-0 bg-grid pointer-events-none" />
 
-      {/* ── Panel izquierdo ── solo desktop ───────────────────────── */}
       <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        className="hidden lg:flex lg:w-[55%] relative overflow-hidden bg-ink-surface flex-col justify-between p-12 border-r border-ink-border"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-md"
       >
-        <div
-          className="absolute inset-0 opacity-[0.05] pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(200,255,77,1) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,77,1) 1px, transparent 1px)',
-            backgroundSize: '44px 44px',
-          }}
-        />
-
-        {/* Logo + back to landing */}
-        <div className="relative z-10 flex items-center justify-between">
-          <LogoBadge size="lg" dark text spin />
-          <Link to="/"
-            className="flex items-center gap-1.5 text-white/40 hover:text-lime text-xs transition-colors">
+        {/* Logo + volver */}
+        <div className="flex items-center justify-between mb-8">
+          <LogoBadge size="md" dark text spin={false} />
+          <Link to="/" className="flex items-center gap-1 text-white/40 hover:text-lime text-xs transition-colors">
             <ArrowLeft size={13} /> Landing
           </Link>
         </div>
 
-        {/* Texto central */}
-        <div className="relative z-10 flex-1 flex flex-col justify-center py-12">
-          <TextAnimate
-            text="Gestiona tu equipo desde un solo lugar"
-            type="whipInUp"
-            style={{ display: 'flex', flexWrap: 'wrap', overflow: 'visible' }}
-            className="font-display text-white font-black text-4xl leading-tight mb-4 mt-0 py-0 px-0"
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-white/50 text-base leading-relaxed mb-10 max-w-sm"
-          >
-            El dashboard interno de OptiMind Solutions para coordinar proyectos, clientes y equipo.
-          </motion.p>
-        </div>
-
-        {/* Footer branding */}
-        <div className="relative z-10">
-          <p className="text-white/20 text-xs italic font-mono">"Pensar diferente nunca fue tan Optimind"</p>
-        </div>
-      </motion.div>
-
-      {/* ── Panel derecho — Formulario ─────────────────────────────── */}
-      <div className="w-full lg:w-[45%] flex items-center justify-center p-6 lg:p-10">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-full max-w-md"
-        >
-
-          {/* Logo + navegación móvil */}
-          <div className="lg:hidden flex items-center justify-between mb-8">
-            <LogoBadge size="md" dark text spin={false} />
-            <Link to="/" className="flex items-center gap-1 text-white/40 hover:text-lime text-xs transition-colors">
-              <ArrowLeft size={13} /> Inicio
-            </Link>
-          </div>
-
-          {/* Card */}
-          <div className="surface-card rounded-lg overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-lime via-lime-dim to-transparent" />
-            <div className="p-8 lg:p-10">
+        {/* Card */}
+        <div className="surface-card rounded-lg overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-lime via-lime-dim to-transparent" />
+          <div className="p-8 lg:p-10">
 
             <div className="mb-8 flex items-start justify-between gap-4">
               <div>
@@ -188,22 +137,21 @@ export default function Login() {
                 }
               </TextureButton>
             </form>
-            </div>
           </div>
+        </div>
 
-          {user && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4">
-              <Link to="/dashboard"
-                className="flex items-center justify-center gap-2 w-full bg-ink-surface hover:bg-ink-surface2 text-lime border border-ink-border py-3 rounded-md text-sm font-semibold transition-colors">
-                <LayoutDashboard size={16} /> Ya sesión activa → Ir al Dashboard
-              </Link>
-            </motion.div>
-          )}
-          <p className="text-center text-white/30 text-xs mt-4 font-mono">
-            © {new Date().getFullYear()} OptiMind Solutions · Acceso restringido
-          </p>
-        </motion.div>
-      </div>
+        {user && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4">
+            <Link to="/dashboard"
+              className="flex items-center justify-center gap-2 w-full bg-ink-surface hover:bg-ink-surface2 text-lime border border-ink-border py-3 rounded-md text-sm font-semibold transition-colors">
+              <LayoutDashboard size={16} /> Ya sesión activa → Ir al Dashboard
+            </Link>
+          </motion.div>
+        )}
+        <p className="text-center text-white/30 text-xs mt-4 font-mono">
+          © {new Date().getFullYear()} OptiMind Solutions · Acceso restringido
+        </p>
+      </motion.div>
     </div>
   )
 }
