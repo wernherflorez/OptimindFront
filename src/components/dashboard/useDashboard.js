@@ -5,20 +5,23 @@ export function useDashboard() {
   const [projects, setProjects] = useState([])
   const [tasks,    setTasks]    = useState([])
   const [clients,  setClients]  = useState([])
+  const [leads,    setLeads]    = useState([])
   const [loading,  setLoading]  = useState(true)
   const [error,    setError]    = useState(null)
 
   const fetchAll = useCallback(async () => {
     setLoading(true); setError(null)
     try {
-      const [pRes, tRes, cRes] = await Promise.all([
+      const [pRes, tRes, cRes, lRes] = await Promise.all([
         api.get('/projects'),
         api.get('/tasks'),
         api.get('/clients'),
+        api.get('/leads'),
       ])
       setProjects(pRes.data)
       setTasks(tRes.data)
       setClients(cRes.data)
+      setLeads(lRes.data)
     } catch {
       setError('Error cargando datos. Verifica que la API esté corriendo.')
     } finally {
@@ -82,6 +85,18 @@ export function useDashboard() {
     setClients(prev => prev.filter(c => c.id !== id))
   }, [])
 
+  // ─── Leads ─────────────────────────────────────────────────────────────
+  const updateLead = useCallback(async (id, data) => {
+    const res = await api.put(`/leads/${id}`, data)
+    setLeads(prev => prev.map(l => l.id === id ? res.data : l))
+    return res.data
+  }, [])
+
+  const deleteLead = useCallback(async (id) => {
+    await api.delete(`/leads/${id}`)
+    setLeads(prev => prev.filter(l => l.id !== id))
+  }, [])
+
   // ─── Derived stats ─────────────────────────────────────────────────────
   const stats = {
     totalRevenue:   clients.reduce((s, c) => s + (c.value || 0), 0),
@@ -91,9 +106,10 @@ export function useDashboard() {
   }
 
   return {
-    projects, tasks, clients, stats, loading, error, fetchAll,
+    projects, tasks, clients, leads, stats, loading, error, fetchAll,
     addProject, updateProject, deleteProject,
     addTask,    updateTask,    deleteTask,
     addClient,  updateClient,  deleteClient,
+    updateLead, deleteLead,
   }
 }

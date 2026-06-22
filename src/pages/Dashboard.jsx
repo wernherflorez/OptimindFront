@@ -5,6 +5,7 @@ import Overview from '../components/dashboard/Overview'
 import Projects from '../components/dashboard/Projects'
 import Board    from '../components/dashboard/Board'
 import Clients  from '../components/dashboard/Clients'
+import Leads    from '../components/dashboard/Leads'
 import Users    from '../components/dashboard/Users'
 import { useDashboard } from '../components/dashboard/useDashboard'
 import { useAuth } from '../context/AuthContext'
@@ -67,6 +68,9 @@ export default function Dashboard() {
               <Route path="clientes" element={
                 <Clients clients={db.clients}
                   addClient={db.addClient} updateClient={db.updateClient} deleteClient={db.deleteClient} />
+              } />
+              <Route path="diagnosticos" element={
+                <Leads leads={db.leads} updateLead={db.updateLead} deleteLead={db.deleteLead} />
               } />
               {isAdmin && <Route path="usuarios" element={<Users />} />}
             </Routes>

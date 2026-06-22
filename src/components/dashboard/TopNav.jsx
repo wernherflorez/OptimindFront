@@ -1,18 +1,28 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, FolderKanban, LayoutGrid, Users,
-  Globe, LogOut, ChevronDown, Bell, UserCog, Menu, X
+  Globe, LogOut, ChevronDown, Bell, UserCog, Menu, X, Mail, Inbox
 } from 'lucide-react'
 import LogoBadge from '../LogoBadge'
 import { useAuth } from '../../context/AuthContext'
+import api from '../../services/api'
+
+function timeAgo(iso) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000
+  if (diff < 60) return 'hace un momento'
+  if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`
+  if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`
+  return `hace ${Math.floor(diff / 86400)} d`
+}
 
 const NAV = [
-  { to: '/dashboard',           label: 'Overview',   icon: LayoutDashboard, end: true },
-  { to: '/dashboard/proyectos', label: 'Proyectos',  icon: FolderKanban },
-  { to: '/dashboard/board',     label: 'Board',      icon: LayoutGrid },
-  { to: '/dashboard/clientes',  label: 'Clientes',   icon: Users },
+  { to: '/dashboard',             label: 'Overview',      icon: LayoutDashboard, end: true },
+  { to: '/dashboard/proyectos',   label: 'Proyectos',     icon: FolderKanban },
+  { to: '/dashboard/board',       label: 'Board',         icon: LayoutGrid },
+  { to: '/dashboard/clientes',    label: 'Clientes',      icon: Users },
+  { to: '/dashboard/diagnosticos', label: 'Diagnósticos', icon: Inbox },
 ]
 
 export default function TopNav() {
@@ -20,13 +30,38 @@ export default function TopNav() {
   const navigate = useNavigate()
   const [dropOpen, setDropOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [leads, setLeads] = useState([])
   const dropRef = useRef(null)
+  const notifRef = useRef(null)
 
   useEffect(() => {
-    const handler = (e) => { if (!dropRef.current?.contains(e.target)) setDropOpen(false) }
+    const handler = (e) => {
+      if (!dropRef.current?.contains(e.target)) setDropOpen(false)
+      if (!notifRef.current?.contains(e.target)) setNotifOpen(false)
+    }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [])
+
+  const fetchLeads = useCallback(() => {
+    api.get('/leads').then(r => setLeads(r.data)).catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    fetchLeads()
+    const interval = setInterval(fetchLeads, 30000)
+    return () => clearInterval(interval)
+  }, [fetchLeads])
+
+  const unseenCount = leads.filter(l => !l.seen).length
+
+  const toggleNotif = () => {
+    setNotifOpen(p => !p)
+    if (!notifOpen && unseenCount > 0) {
+      api.put('/leads/seen').then(() => setLeads(ls => ls.map(l => ({ ...l, seen: true })))).catch(() => {})
+    }
+  }
 
   const links = isAdmin ? [...NAV, { to: '/dashboard/usuarios', label: 'Usuarios', icon: UserCog }] : NAV
 
@@ -69,10 +104,57 @@ export default function TopNav() {
             </NavLink>
 
             {/* Notification bell */}
-            <button className="w-8 h-8 rounded-md flex items-center justify-center text-white/40 hover:text-white hover:bg-white/5 transition-all relative">
-              <Bell size={15} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-lime rounded-full" />
-            </button>
+            <div ref={notifRef} className="relative">
+              <button
+                onClick={toggleNotif}
+                className="w-8 h-8 rounded-md flex items-center justify-center text-white/40 hover:text-white hover:bg-white/5 transition-all relative"
+              >
+                <Bell size={15} />
+                {unseenCount > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-lime rounded-full border border-ink" />
+                )}
+              </button>
+
+              <AnimatePresence>
+                {notifOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-80 max-h-96 overflow-y-auto rounded-lg py-2 z-50 bg-ink-surface border border-ink-border shadow-2xl"
+                  >
+                    <div className="px-4 py-2 mb-1 border-b border-ink-border flex items-center justify-between">
+                      <p className="text-white text-sm font-semibold">Diagnósticos agendados</p>
+                      <span className="text-white/30 text-xs font-mono">{leads.length}</span>
+                    </div>
+                    {leads.length === 0 ? (
+                      <div className="px-4 py-6 text-center">
+                        <Mail size={20} className="text-white/15 mx-auto mb-2" />
+                        <p className="text-white/30 text-sm">Sin solicitudes todavía</p>
+                      </div>
+                    ) : (
+                      leads.slice(0, 10).map(lead => (
+                        <div key={lead.id} className="px-4 py-3 hover:bg-white/5 transition-all border-b border-ink-border last:border-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-white text-sm font-semibold truncate">{lead.name}</span>
+                            <span className="text-white/30 text-xs shrink-0 font-mono">{timeAgo(lead.created_at)}</span>
+                          </div>
+                          <p className="text-white/40 text-xs mt-0.5">{lead.company || lead.email}</p>
+                          <p className="text-white/50 text-xs mt-1 line-clamp-2">{lead.message}</p>
+                        </div>
+                      ))
+                    )}
+                    <button
+                      onClick={() => { setNotifOpen(false); navigate('/dashboard/diagnosticos') }}
+                      className="w-full text-center text-lime text-xs font-semibold py-2.5 mt-1 hover:bg-white/5 transition-all"
+                    >
+                      Ver todos los diagnósticos →
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* User dropdown */}
             <div ref={dropRef} className="relative">

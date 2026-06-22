@@ -1,7 +1,8 @@
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { TextureButton } from '../ui/texture-button'
+import api from '../../services/api'
 
 const sectors = ['Retail', 'Fintech', 'Logística', 'Salud', 'Otro']
 const budgets = ['$600K – $1M COP', '$1M – $1.5M COP', '$1.5M – $2M COP', '$2M – $2.5M COP', '+$2.5M COP']
@@ -12,13 +13,21 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', company: '', sector: '', budget: '', message: '' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const hc = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); setLoading(true)
-    await new Promise(r => setTimeout(r, 1200))
-    setLoading(false); setSent(true)
+    e.preventDefault()
+    setError(''); setLoading(true)
+    try {
+      await api.post('/leads', form)
+      setSent(true)
+    } catch (err) {
+      setError(err.response?.data?.error || 'No se pudo enviar el mensaje. Intenta de nuevo o escríbenos directamente.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inp = "w-full bg-ink-surface2 border border-ink-border text-white placeholder-white/25 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-lime focus:ring-2 focus:ring-lime/20 transition-all"
@@ -102,6 +111,12 @@ export default function Contact() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {error && (
+                    <div className="flex items-center gap-2.5 bg-error/10 border border-error/30 text-error rounded-md px-4 py-3 text-sm">
+                      <AlertCircle size={16} className="shrink-0" />
+                      {error}
+                    </div>
+                  )}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div><label className="text-white/50 text-xs font-medium block mb-1.5">Nombre *</label>
                       <input name="name" value={form.name} onChange={hc} required placeholder="Tu nombre" className={inp} /></div>
