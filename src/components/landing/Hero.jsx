@@ -20,10 +20,10 @@ const floatingCards = [
 ]
 
 const stats = [
-  { n: '4–6',   label: 'semanas al MVP' },
-  { n: '30%',   label: 'reducción de tiempos' },
-  { n: '99.9%', label: 'uptime garantizado' },
-  { n: '5+',    label: 'proyectos en producción' },
+  { n: '4–6',     label: 'semanas al MVP' },
+  { n: 'Demos',   label: 'quincenales de avance' },
+  { n: 'Soporte', label: 'post-lanzamiento incluido' },
+  { n: '5+',      label: 'proyectos en producción' },
 ]
 
 export default function Hero() {

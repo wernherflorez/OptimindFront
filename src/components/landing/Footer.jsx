@@ -7,7 +7,6 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-ink-border bg-ink">
-      <div className="absolute inset-0 bg-grid pointer-events-none opacity-50" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-14">
         <div className="grid lg:grid-cols-4 gap-10 mb-12">
@@ -56,7 +55,7 @@ export default function Footer() {
 
         <div className="border-t border-ink-border pt-8 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-white/30 text-xs font-mono">© {year} OptiMind Solutions. Todos los derechos reservados.</p>
-          <p className="text-white/30 text-xs font-mono">Hecho con ☕ en Colombia 🇨🇴</p>
+          <p className="text-white/30 text-xs font-mono">Hecho en Colombia</p>
         </div>
       </div>
     </footer>

@@ -112,7 +112,6 @@ export default function Team() {
 
   return (
     <section id="equipo" className="py-28 relative overflow-hidden bg-ink-surface">
-      <div className="absolute inset-0 bg-grid-sm pointer-events-none opacity-60" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <motion.div

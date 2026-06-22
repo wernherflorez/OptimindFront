@@ -20,7 +20,6 @@ export default function Process() {
 
   return (
     <section id="proceso" className="py-28 relative overflow-hidden bg-ink">
-      <div className="absolute inset-0 bg-grid pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
         <motion.div

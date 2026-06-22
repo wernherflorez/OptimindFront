@@ -59,18 +59,13 @@
     border: 1px solid hsl(var(--border));
   }
 
-  /* Technical grid background (lime-tinted, very low opacity) */
+  /* Technical grid background — subtle texture, not graph paper. Use sparingly (Hero only). */
   .bg-grid {
     background-image:
-      linear-gradient(rgba(200,255,77,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,255,77,0.05) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
-  .bg-grid-sm {
-    background-image:
-      linear-gradient(rgba(200,255,77,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,255,77,0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
+      linear-gradient(rgba(200,255,77,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,255,77,0.025) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: linear-gradient(to bottom, black, transparent);
   }
 
   /* Custom scrollbar */
