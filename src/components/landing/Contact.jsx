@@ -30,7 +30,8 @@ export default function Contact() {
     }
   }
 
-  const inp = "w-full bg-ink-surface2 border border-ink-border text-white placeholder-white/25 rounded-md px-4 py-3 text-sm focus:outline-none focus:border-lime focus:ring-2 focus:ring-lime/20 transition-all"
+  const inp = "w-full bg-ink border border-white/15 text-white placeholder-white/30 rounded-md px-4 py-3.5 text-sm font-medium focus:outline-none focus:border-lime focus:ring-2 focus:ring-lime/25 transition-all"
+  const lbl = "text-white text-sm font-bold block mb-2"
 
   return (
     <section id="contacto" className="py-28 relative overflow-hidden bg-ink-surface">
@@ -59,8 +60,8 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="lg:col-span-2 space-y-5"
           >
-            <div className="surface-card rounded-lg p-6">
-              <h3 className="font-display text-white font-bold text-lg mb-5">¿Por qué elegirnos?</h3>
+            <div className="rounded-lg p-6 bg-ink border-2 border-lime/30 shadow-[0_0_40px_-10px_rgba(200,255,77,0.35)]">
+              <h3 className="font-display text-white font-black text-xl mb-5">¿Por qué elegirnos?</h3>
               {[
                 'MVP funcional en 4–6 semanas',
                 'Precio desde $600K COP',
@@ -68,27 +69,34 @@ export default function Contact() {
                 'Stack moderno: React, Node, Azure',
                 'Soporte en español, zona horaria COP',
               ].map(item => (
-                <div key={item} className="flex items-center gap-3 mb-3">
-                  <div className="w-5 h-5 rounded-full bg-lime/15 border border-lime/30 flex items-center justify-center shrink-0">
-                    <div className="w-1.5 h-1.5 rounded-full bg-lime" />
+                <div key={item} className="flex items-center gap-3 mb-3.5">
+                  <div className="w-6 h-6 rounded-full bg-lime flex items-center justify-center shrink-0">
+                    <CheckCircle size={14} className="text-ink" strokeWidth={3} />
                   </div>
-                  <span className="text-white/70 text-sm">{item}</span>
+                  <span className="text-white text-sm font-semibold">{item}</span>
                 </div>
               ))}
             </div>
-            <div className="surface-card rounded-lg p-5 space-y-4">
-              {[
-                { icon: Mail,   text: 'FlorezWernher26@gmail.com' },
-                { icon: Phone,  text: '+57 321 307 4133' },
-                { icon: MapPin, text: 'Colombia · LatAm' },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-3 text-sm text-white/60">
-                  <div className="w-8 h-8 bg-ink-surface2 border border-ink-border rounded-md flex items-center justify-center shrink-0">
-                    <Icon size={14} className="text-lime" />
-                  </div>
-                  {text}
+
+            <div className="rounded-lg p-5 space-y-3 bg-ink border border-white/15">
+              <a href="mailto:FlorezWernher26@gmail.com" className="flex items-center gap-3 text-sm group">
+                <div className="w-10 h-10 bg-lime/15 border border-lime/30 rounded-md flex items-center justify-center shrink-0 group-hover:bg-lime transition-colors">
+                  <Mail size={16} className="text-lime group-hover:text-ink transition-colors" />
                 </div>
-              ))}
+                <span className="text-white font-semibold group-hover:text-lime transition-colors">FlorezWernher26@gmail.com</span>
+              </a>
+              <a href="tel:+573213074133" className="flex items-center gap-3 text-sm group">
+                <div className="w-10 h-10 bg-lime/15 border border-lime/30 rounded-md flex items-center justify-center shrink-0 group-hover:bg-lime transition-colors">
+                  <Phone size={16} className="text-lime group-hover:text-ink transition-colors" />
+                </div>
+                <span className="text-white font-semibold group-hover:text-lime transition-colors">+57 321 307 4133</span>
+              </a>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-10 h-10 bg-lime/15 border border-lime/30 rounded-md flex items-center justify-center shrink-0">
+                  <MapPin size={16} className="text-lime" />
+                </div>
+                <span className="text-white font-semibold">Colombia · LatAm</span>
+              </div>
             </div>
           </motion.div>
 
@@ -99,7 +107,9 @@ export default function Contact() {
             transition={{ delay: 0.3 }}
             className="lg:col-span-3"
           >
-            <div className="surface-card rounded-lg p-8">
+            <div className="rounded-lg overflow-hidden bg-ink border-2 border-lime/30 shadow-[0_0_60px_-10px_rgba(200,255,77,0.4)]">
+              <div className="h-1.5 bg-gradient-to-r from-lime via-lime-dim to-lime" />
+              <div className="p-8">
               {sent ? (
                 <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-12">
                   <div className="w-20 h-20 bg-lime/15 border border-lime/30 rounded-full flex items-center justify-center mx-auto mb-5">
@@ -118,36 +128,37 @@ export default function Contact() {
                     </div>
                   )}
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div><label className="text-white/50 text-xs font-medium block mb-1.5">Nombre *</label>
+                    <div><label className={lbl}>Nombre *</label>
                       <input name="name" value={form.name} onChange={hc} required placeholder="Tu nombre" className={inp} /></div>
-                    <div><label className="text-white/50 text-xs font-medium block mb-1.5">Email *</label>
+                    <div><label className={lbl}>Email *</label>
                       <input name="email" type="email" value={form.email} onChange={hc} required placeholder="tu@empresa.com" className={inp} /></div>
                   </div>
-                  <div><label className="text-white/50 text-xs font-medium block mb-1.5">Empresa</label>
+                  <div><label className={lbl}>Empresa</label>
                     <input name="company" value={form.company} onChange={hc} placeholder="Nombre de tu empresa" className={inp} /></div>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <div><label className="text-white/50 text-xs font-medium block mb-1.5">Sector</label>
+                    <div><label className={lbl}>Sector</label>
                       <select name="sector" value={form.sector} onChange={hc} className={inp}>
                         <option value="">Selecciona...</option>
                         {sectors.map(s => <option key={s}>{s}</option>)}
                       </select></div>
-                    <div><label className="text-white/50 text-xs font-medium block mb-1.5">Presupuesto</label>
+                    <div><label className={lbl}>Presupuesto</label>
                       <select name="budget" value={form.budget} onChange={hc} className={inp}>
                         <option value="">Selecciona...</option>
                         {budgets.map(b => <option key={b}>{b}</option>)}
                       </select></div>
                   </div>
-                  <div><label className="text-white/50 text-xs font-medium block mb-1.5">¿Cuál es tu reto? *</label>
+                  <div><label className={lbl}>¿Cuál es tu reto? *</label>
                     <textarea name="message" value={form.message} onChange={hc} required rows={4}
                       placeholder="¿Qué proceso quieres digitalizar o mejorar?"
                       className={inp + ' resize-none'} /></div>
-                  <TextureButton type="submit" variant="lime" disabled={loading}>
+                  <TextureButton type="submit" variant="lime" disabled={loading} className="!py-4 text-base">
                     {loading ? <div className="w-5 h-5 border-2 border-ink/30 border-t-ink rounded-full animate-spin" />
-                      : <><Send size={17} /> Agendar diagnóstico gratuito</>}
+                      : <><Send size={18} /> Agendar diagnóstico gratuito</>}
                   </TextureButton>
                   <p className="text-center text-white/30 text-xs">Primera consultoría gratuita. Respondemos en menos de 24 horas.</p>
                 </form>
               )}
+              </div>
             </div>
           </motion.div>
         </div>
