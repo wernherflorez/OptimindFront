@@ -79,13 +79,13 @@ export default function Contact() {
             </div>
 
             <div className="rounded-lg p-5 space-y-3 bg-ink border border-white/15">
-              <a href="mailto:FlorezWernher26@gmail.com" className="flex items-center gap-3 text-sm group">
+              <a href="mailto:FlorezWernher26@gmail.com" className="flex items-center gap-3 text-sm group py-1">
                 <div className="w-10 h-10 bg-lime/15 border border-lime/30 rounded-md flex items-center justify-center shrink-0 group-hover:bg-lime transition-colors">
                   <Mail size={16} className="text-lime group-hover:text-ink transition-colors" />
                 </div>
                 <span className="text-white font-semibold group-hover:text-lime transition-colors">FlorezWernher26@gmail.com</span>
               </a>
-              <a href="tel:+573213074133" className="flex items-center gap-3 text-sm group">
+              <a href="tel:+573213074133" className="flex items-center gap-3 text-sm group py-1">
                 <div className="w-10 h-10 bg-lime/15 border border-lime/30 rounded-md flex items-center justify-center shrink-0 group-hover:bg-lime transition-colors">
                   <Phone size={16} className="text-lime group-hover:text-ink transition-colors" />
                 </div>
