@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react'
+import api from '../../services/api'
 
 const BOT = 'bot'
 const USR = 'user'
@@ -20,45 +21,7 @@ const quickReplies = [
   '¿Cómo agendo una consulta?',
 ]
 
-const responses = {
-  servicios: {
-    keys: ['servicio', 'hacen', 'ofrecen', 'que hacen'],
-    text: 'Ofrecemos 5 servicios principales:\n\n🌐 **Plataformas Web & APIs** personalizadas\n⚙️ **Automatización de procesos** (−30% tiempo operativo)\n📊 **Dashboards BI** con Power BI\n💳 **Integración PSE** y pasarelas de pago\n🔧 **Mantenimiento & Soporte** continuo\n\n¿Sobre cuál quieres saber más?',
-  },
-  precio: {
-    keys: ['precio', 'costo', 'cuánto', 'cuanto', 'vale', 'presupuesto', 'tarifa'],
-    text: 'Nuestros proyectos van desde **$600.000 hasta $2.500.000 COP** dependiendo del alcance.\n\n💰 Desarrollo web básico: desde $600K\n🚀 Plataformas con BI o integraciones: hasta $2.5M\n🔧 Mantenimiento mensual: según SLA\n\nPrecios cerrados, sin cobros ocultos. Incluye desarrollo, pruebas, deploy y capacitación.\n\n¿Quieres un diagnóstico gratuito para estimar tu proyecto?',
-  },
-  tiempo: {
-    keys: ['tiempo', 'semana', 'cuándo', 'cuando', 'rápido', 'rapido', 'demora', 'tarda', 'mvp'],
-    text: '⚡ Entregamos MVPs funcionales en **4–6 semanas**.\n\nNuestro proceso:\n• Semana 1: Diagnóstico y propuesta\n• Semanas 2–5: Desarrollo en sprints\n• Semana 6: Lanzamiento y capacitación\n\nDemos quincenales para que veas avances reales. Mucho más rápido que la competencia (3–6 meses).',
-  },
-  contacto: {
-    keys: ['contacto', 'agendar', 'hablar', 'llamar', 'reunión', 'reunion', 'consulta', 'diagnóstico', 'diagnostico'],
-    text: '📅 Puedes agendar tu **diagnóstico gratuito de 30 min** directamente:\n\n✉️ Email: FlorezWernher26@gmail.com\n📱 WhatsApp: +57 321 307 4133\n📝 Formulario de contacto abajo en la página\n\nTe respondemos en menos de 24 horas.',
-  },
-  tecnologia: {
-    keys: ['tecnolog', 'react', 'node', 'azure', 'stack', 'framework', 'lenguaje'],
-    text: 'Trabajamos con tecnologías modernas y escalables:\n\n⚛️ **Frontend**: React + Tailwind CSS\n🟢 **Backend**: Node.js + Express\n☁️ **Cloud**: Azure / AWS / GCP\n📊 **BI**: Power BI\n🔐 **Auth**: JWT + PCI-DSS compliant\n\nTodo con uptime garantizado del 99.9%.',
-  },
-  pymes: {
-    keys: ['pyme', 'pequeña', 'empresa', 'sector', 'retail', 'fintech', 'logística', 'logistica', 'salud'],
-    text: 'Trabajamos con **Pymes de 10 a 200 empleados** en:\n\n🛍️ Retail\n💰 Fintech\n📦 Logística\n🏥 Salud\n\nNuestro mercado base es **Colombia**, con expansión a la región Andina y Latinoamérica.',
-  },
-  default: {
-    text: 'Gracias por tu mensaje. Para darte la mejor respuesta, te recomiendo:\n\n📝 Llenar el **formulario de contacto** en esta misma página\n✉️ Escribirnos a: FlorezWernher26@gmail.com\n\nO cuéntame más sobre lo que necesitas y con gusto te oriento. 😊',
-  },
-}
-
-function getResponse(text) {
-  const lower = text.toLowerCase()
-  for (const [, data] of Object.entries(responses)) {
-    if (data.keys && data.keys.some(k => lower.includes(k))) {
-      return data.text
-    }
-  }
-  return responses.default.text
-}
+const FALLBACK_REPLY = 'No pude conectarme en este momento. Escríbenos por el formulario de contacto o por WhatsApp y te respondemos enseguida.'
 
 function renderText(text) {
   return text.split('\n').map((line, i) => {
@@ -95,10 +58,14 @@ export default function Chatbot() {
     setMessages(prev => [...prev, { from: USR, text: msg, time: new Date() }])
     setTyping(true)
 
-    await new Promise(r => setTimeout(r, 900 + Math.random() * 600))
-    const reply = getResponse(msg)
-    setTyping(false)
-    setMessages(prev => [...prev, { from: BOT, text: reply, time: new Date() }])
+    try {
+      const { data } = await api.post('/chat', { message: msg })
+      setMessages(prev => [...prev, { from: BOT, text: data.reply, time: new Date() }])
+    } catch {
+      setMessages(prev => [...prev, { from: BOT, text: FALLBACK_REPLY, time: new Date() }])
+    } finally {
+      setTyping(false)
+    }
   }
 
   const handleKey = (e) => {

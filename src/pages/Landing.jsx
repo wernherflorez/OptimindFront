@@ -7,6 +7,7 @@ import Team from '../components/landing/Team'
 import Contact from '../components/landing/Contact'
 import Footer from '../components/landing/Footer'
 import Chatbot from '../components/landing/Chatbot'
+import WhatsAppButton from '../components/landing/WhatsAppButton'
 
 export default function Landing() {
   return (
@@ -20,6 +21,7 @@ export default function Landing() {
       <Contact />
       <Footer />
       <Chatbot />
+      <WhatsAppButton />
     </div>
   )
 }
